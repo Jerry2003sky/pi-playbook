@@ -2,7 +2,7 @@
 
 A pi package that gives startup a polished Pi header while keeping pi's original footer.
 
-![Screenshot](./assets/screenshot.png)
+![Screenshot](./assets/startup_screenshot.png)
 
 ## Installation
 
