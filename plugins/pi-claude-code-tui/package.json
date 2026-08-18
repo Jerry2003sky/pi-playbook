@@ -1,0 +1,50 @@
+{
+  "name": "pi-claude-code-tui",
+  "version": "0.1.13",
+  "description": "A pi package that gives the TUI a polished Pi startup header and Codex-style input box.",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "tui",
+    "startup",
+    "theme",
+    "claude",
+    "codex"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Phoobobo/pi-claude-code-tui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phoobobo/pi-claude-code-tui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Phoobobo/pi-claude-code-tui/issues"
+  },
+  "files": [
+    "extensions",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/**/*.test.ts"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/claude-code-startup.ts"
+    ],
+    "image": "https://raw.githubusercontent.com/Phoobobo/pi-claude-code-tui/main/assets/screenshot.png"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "providers": {
+    "zai-coding-cn": {
+      "modelOverrides": {
+        "glm-5.3": {
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "compat": {
+            "supportsReasoningEffort": true
+          }
+        }
+      }
+    },
+    "xai": {
+      "modelOverrides": {
+        "grok-4.6": {
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh"
+          },
+          "compat": {
+            "supportsReasoningEffort": true
+          }
+        }
+      }
+    }
+  }
+}
