@@ -21,9 +21,9 @@ Fall back to built-in or shell search tools only when the corresponding FFF tool
 # Sub-agent Delegation
 
 Default to delegating well-specified work to the `fast` sub-agent via the
-Agent tool (`subagent_type: "fast"`). It runs DeepSeek V4 Flash with
-thinking max — capable, fast, and far cheaper than the model running this
-session — with the built-in tools plus the fff / rtk / web-access extensions
+Agent tool (`subagent_type: "fast"`). It runs a low-cost workhorse model at
+max thinking effort — capable, fast, and far cheaper than the model running
+this session — with the built-in tools plus the fff / web-access extensions
 and skills, in its own fresh session. Delegation keeps raw material (file
 dumps, search hits, command logs) out of this conversation and off the
 expensive model.

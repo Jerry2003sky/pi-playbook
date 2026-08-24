@@ -9,6 +9,8 @@
 
 完整文件见 [`config/models.json`](../config/models.json)。
 
+> **这份文件已退役，保留作示例。** 它写于 pi 内置模型目录还没跟上新模型的时期。pi 0.84.3 把上面这些修正（glm-5.3 等中国站模型、grok-4.6 的档位映射）收录进了上游模型目录，本机已不再需要这份覆盖。新模型发布、上游目录设错档位时，仍按这个文件的写法在 `~/.pi/agent/models.json` 里覆盖。
+
 ## 思考等级映射（thinkingLevelMap）
 
 pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`、`xhigh`、`max`。但每个供应商对“思考强度”的支持不同：有的只支持三档，有的用 `reasoning_effort` 参数。`modelOverrides` 里的 `thinkingLevelMap` 把 pi 的七档映射到该模型实际支持的档位：
@@ -63,8 +65,8 @@ pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`�
 
 ```json
 "enabledModels": [
-  "deepseek/deepseek-v4-flash",       // 便宜快速，子代理与自动命名默认模型
-  "deepseek/deepseek-v4-pro",         // 主力模型，默认
+  "deepseek/deepseek-v4-flash",       // 便宜快速，fast 子代理专用
+  "deepseek/deepseek-v4-pro",
   "fireworks/accounts/fireworks/models/qwen3p8-max",
   "kimi-coding/k3",
   "kimi-coding/k3-256k",              // 256K 长上下文版
@@ -72,16 +74,17 @@ pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`�
   "openai-codex/gpt-5.6-sol",         // 高质搜索模型
   "xai/grok-4.6",
   "fireworks/accounts/fireworks/routers/kimi-k3-fast",
-  "zai-coding-cn/glm-5.3",
-  "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731"  // 剪枝摘要模型
+  "zai-coding-cn/glm-5.3",                     // 主力模型，默认
+  "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+  "openai-codex/gpt-5.6-luna"             // 廉价档：会话命名、剪枝摘要
 ]
 ```
 
 只放进这个列表的模型会出现在 Ctrl+P 循环里；`/model` 里仍能手动选任何已接入模型。我保留的清单覆盖三档用途：
 
-- **主力**：deepseek-v4-pro（性价比）
-- **廉价档**：deepseek-v4-flash（子代理、自动命名）、fireworks 上的 deepseek-v4-flash-0731（剪枝摘要）
-- **高端备选**：gpt-5.6-sol、grok-4.6、glm-5.3、kimi k3 系列——长上下文或难任务时 `/model` 切换
+- **主力**：glm-5.3（百万上下文，性价比）
+- **廉价档**：openai-codex/gpt-5.6-luna（会话命名、剪枝摘要）、deepseek-v4-flash（fast 子代理）
+- **高端备选**：gpt-5.6-sol、grok-4.6、deepseek-v4-pro、kimi k3 系列——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商
 

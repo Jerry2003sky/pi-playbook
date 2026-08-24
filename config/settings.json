@@ -1,20 +1,18 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "theme": "dark",
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "zai-coding-cn",
+  "defaultModel": "glm-5.3",
   "defaultThinkingLevel": "max",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-context-view",
     "npm:pi-cache-graph",
     "npm:@ff-labs/pi-fff",
-    "npm:pi-rtk-optimizer",
     "npm:pi-claude-code-ui",
     "npm:@tintinweb/pi-subagents",
     "npm:pi-token-speed",
     "npm:pi-condense",
-    "npm:pi-compact-ex",
     "npm:pi-autoname",
     "npm:@juicesharp/rpiv-ask-user-question"
   ],
@@ -31,7 +29,8 @@
     "xai/grok-4.6",
     "fireworks/accounts/fireworks/routers/kimi-k3-fast",
     "zai-coding-cn/glm-5.3",
-    "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731"
+    "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+    "openai-codex/gpt-5.6-luna"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -47,8 +46,8 @@
   "contextPrune": {
     "enabled": true,
     "showPruneStatusLine": false,
-    "summarizerModel": "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
-    "summarizerThinking": "off",
+    "summarizerModel": "openai-codex/gpt-5.6-luna",
+    "summarizerThinking": "high",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
     "quietOversizedSkips": true,
@@ -85,6 +84,6 @@
     "spillPreviewBytes": 2048,
     "budgetTurnDelta": null
   },
-  "quietStartup": true,
+  "quietStartup": false,
   "editorPaddingX": 1
 }

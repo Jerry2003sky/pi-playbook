@@ -1,9 +1,7 @@
 {
   "enabled": true,
-  "model": "deepseek/deepseek-v4-flash",
-  "fallbackModels": [
-    "openai-codex/gpt-5.6-luna"
-  ],
+  "model": "openai-codex/gpt-5.6-luna",
+  "fallbackModels": ["deepseek/deepseek-v4-flash"],
   "cooldownMinutes": 20,
   "debug": false,
   "respectManualName": true

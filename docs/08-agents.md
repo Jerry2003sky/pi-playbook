@@ -12,12 +12,12 @@
 ```yaml
 ---
 description: Default delegation target for well-specified work — codebase recon, packaged search/read errands, implementation from a clear spec, mechanical edits, tests, review passes, bulky-output commands, web research. Much cheaper than the main model and keeps raw output out of the main context. Give it a self-contained prompt; it sees nothing else.
-display_name: DeepSeek V4 Flash
+display_name: Pico
 model: deepseek/deepseek-v4-flash
 thinking: max
 prompt_mode: replace
 inherit_context: false
-extensions: [pi-fff, pi-rtk-optimizer, pi-web-access]
+extensions: [pi-fff, pi-web-access]
 skills: true
 tools: read, grep, find, ls, bash, edit, write
 ---
@@ -26,19 +26,19 @@ tools: read, grep, find, ls, bash, edit, write
 | 字段 | 取值 | 含义 |
 |------|------|------|
 | `description` | 一段英文 | 出现在 `Agent` 工具的 `subagent_type` 描述里，主模型选型时读它；要写清楚**适合什么任务** |
-| `display_name` | `DeepSeek V4 Flash` | 界面上显示的名字 |
-| `model` | `deepseek/deepseek-v4-flash` | 子代理用的模型。选最便宜的 flash——子代理干的活不需要 pro |
+| `display_name` | `Pico` | 界面上显示的名字 |
+| `model` | `deepseek/deepseek-v4-flash` | 子代理用的模型。选最便宜的 flash——子代理干的活用不着主力模型 |
 | `thinking` | `max` | flash 便宜，思考强度拉满也划算，效果显著好于低档 |
 | `prompt_mode` | `replace` | 正文整体替换默认 system prompt（`append` 是追加） |
 | `inherit_context` | `false` | 不继承主会话历史——保持隔离，节省上下文 |
-| `extensions` | 三个扩展 | 给子代理配工具扩展：fff（搜索）、rtk-optimizer（输出压缩）、web-access（联网） |
+| `extensions` | 两个扩展 | 给子代理配工具扩展：fff（搜索）、web-access（联网） |
 | `skills` | `true` | 加载技能 |
 | `tools` | 白名单 | 只给基础工具，**没有 `Agent` 和网络之外的重量级工具**——控制子代理的能力边界 |
 
 两个设计要点：
 
 1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
-2. **模型分工。** 主模型（deepseek-v4-pro）干推理和决策，flash 干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
+2. **模型分工。** 主模型（glm-5.3）干推理和决策，flash 干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
 
 ## 正文 prompt 的设计
 

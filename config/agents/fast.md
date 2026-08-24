@@ -1,11 +1,11 @@
 ---
 description: Default delegation target for well-specified work — codebase recon, packaged search/read errands, implementation from a clear spec, mechanical edits, tests, review passes, bulky-output commands, web research. Much cheaper than the main model and keeps raw output out of the main context. Give it a self-contained prompt; it sees nothing else.
-display_name: DeepSeek V4 Flash
+display_name: Pico
 model: deepseek/deepseek-v4-flash
 thinking: max
 prompt_mode: replace
 inherit_context: false
-extensions: [pi-fff, pi-rtk-optimizer, pi-web-access]
+extensions: [pi-fff, pi-web-access]
 skills: true
 tools: read, grep, find, ls, bash, edit, write
 ---
