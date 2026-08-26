@@ -4,23 +4,26 @@
 
 | 文件 | 职责 |
 |------|------|
-| `~/.pi/agent/models.json` | 供应商/模型的行为覆盖（本文件的主角） |
+| `~/.pi/agent/models.json` | 供应商/模型的行为覆盖与自定义模型（本文件的主角） |
 | `~/.pi/agent/settings.json` 的 `enabledModels` | Ctrl+P 循环切换的模型清单 |
 
 完整文件见 [`config/models.json`](../config/models.json)。
 
-> **这份文件已退役，保留作示例。** 它写于 pi 内置模型目录还没跟上新模型的时期。pi 0.84.3 把上面这些修正（glm-5.3 等中国站模型、grok-4.6 的档位映射）收录进了上游模型目录，本机已不再需要这份覆盖。新模型发布、上游目录设错档位时，仍按这个文件的写法在 `~/.pi/agent/models.json` 里覆盖。
+> **这份文件经历过一次换血。** 早期它放的是 thinkingLevelMap 覆盖——pi 0.84.3 把那些修正（glm-5.3 等中国站模型、grok-4.6 的档位映射）收录进上游目录后，覆盖全部退役。现在它只干一件事：定义自定义模型 **GLM-5.3 Flash**——智谱新发的廉价档，上游目录还没跟上，先手工接入，给 pico 子代理当执行模型（见 [08-agents.md](08-agents.md)）。等上游目录收录后，这份定义同样可以退役。
 
-## 思考等级映射（thinkingLevelMap）
-
-pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`、`xhigh`、`max`。但每个供应商对“思考强度”的支持不同：有的只支持三档，有的用 `reasoning_effort` 参数。`modelOverrides` 里的 `thinkingLevelMap` 把 pi 的七档映射到该模型实际支持的档位：
+## 自定义模型定义
 
 ```json
 {
   "providers": {
     "zai-coding-cn": {
-      "modelOverrides": {
-        "glm-5.3": {
+      "models": [
+        {
+          "id": "glm-5.3-flash",
+          "name": "GLM-5.3 Flash",
+          "api": "openai-completions",
+          "baseUrl": "https://open.bigmodel.cn/api/coding/paas/v4",
+          "reasoning": true,
           "thinkingLevelMap": {
             "off": null,
             "minimal": null,
@@ -30,24 +33,25 @@ pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`�
             "xhigh": null,
             "max": "max"
           },
-          "compat": { "supportsReasoningEffort": true }
-        }
-      }
-    },
-    "xai": {
-      "modelOverrides": {
-        "grok-4.6": {
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "xhigh"
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 131072,
+          "cost": {
+            "input": 0.15,
+            "output": 0.5,
+            "cacheRead": 0.03,
+            "cacheWrite": 0
           },
-          "compat": { "supportsReasoningEffort": true }
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true,
+            "maxTokensField": "max_tokens",
+            "thinkingFormat": "zai",
+            "zaiToolStream": true
+          }
         }
-      }
+      ]
     }
   }
 }
@@ -55,17 +59,19 @@ pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`�
 
 读法：
 
-- `null` = 该档位此模型不支持，选了会自动落到最近的支持档。
-- glm-5.3 只支持 `low / high / max` 三档；grok-4.6 支持 `low` 到 `xhigh` 四档（没有 `max`）。
-- `supportsReasoningEffort: true` 表示供应商接受 `reasoning_effort` 参数，pi 会直接透传档位值。
+- `id` / `name` / `api` / `baseUrl`：模型标识、显示名、接入方式。GLM 的编码包走 OpenAI 兼容端点，`api: "openai-completions"` + `baseUrl` 两样就把新模型接进来——自定义模型的核心就是这三样。
+- `reasoning` + `thinkingLevelMap`：声明这是思考模型，并把 pi 统一的七档（`off` 到 `max`）映射到它实际支持的档位。`null` = 该档位此模型不支持，选了会自动落到最近的支持档；glm-5.3-flash 与 glm-5.3 一样只支持 `low / high / max` 三档。
+- `input` / `contextWindow` / `maxTokens`：输入模态（文本 + 图片）、百万上下文、输出上限。
+- `cost`：每百万 token 的价格（美元），供成本估算用。
+- `compat`：兼容开关。`thinkingFormat: "zai"` 让 pi 用智谱的思考格式传档位；`supportsStore` / `supportsDeveloperRole` 关掉对方不支持的字段，`zaiToolStream` 处理工具调用的流式返回。
 
-模型名必须与供应商的定义一致（在 TUI 里 `/model` 可以看到完整列表）。给自定义/私有供应商加模型时，`modelOverrides` 挂在同一个 `providers.<供应商>` 键下。
+模型名必须与供应商的定义一致（在 TUI 里 `/model` 可以看到完整列表）。改内置模型的行为用同一个 `providers.<供应商>` 键下的 `modelOverrides`；加全新模型用 `models` 数组——上面这份就是后者的实例。
 
 ## enabledModels：Ctrl+P 切换清单
 
 ```json
 "enabledModels": [
-  "deepseek/deepseek-v4-flash",       // 便宜快速，fast 子代理专用
+  "deepseek/deepseek-v4-flash",       // 便宜快速
   "deepseek/deepseek-v4-pro",
   "fireworks/accounts/fireworks/models/qwen3p8-max",
   "kimi-coding/k3",
@@ -76,14 +82,15 @@ pi 统一用七个思考档位：`off`、`minimal`、`low`、`medium`、`high`�
   "fireworks/accounts/fireworks/routers/kimi-k3-fast",
   "zai-coding-cn/glm-5.3",                     // 主力模型，默认
   "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
-  "openai-codex/gpt-5.6-luna"             // 廉价档：会话命名、剪枝摘要
+  "openai-codex/gpt-5.6-luna",         // 廉价档：会话命名、剪枝摘要
+  "zai-coding-cn/glm-5.3-flash"        // 廉价档：pico 子代理执行
 ]
 ```
 
 只放进这个列表的模型会出现在 Ctrl+P 循环里；`/model` 里仍能手动选任何已接入模型。我保留的清单覆盖三档用途：
 
 - **主力**：glm-5.3（百万上下文，性价比）
-- **廉价档**：openai-codex/gpt-5.6-luna（会话命名、剪枝摘要）、deepseek-v4-flash（fast 子代理）
+- **廉价档**：openai-codex/gpt-5.6-luna（会话命名、剪枝摘要）、glm-5.3-flash（pico 子代理）
 - **高端备选**：gpt-5.6-sol、grok-4.6、deepseek-v4-pro、kimi k3 系列——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商

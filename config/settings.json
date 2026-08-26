@@ -30,7 +30,8 @@
     "fireworks/accounts/fireworks/routers/kimi-k3-fast",
     "zai-coding-cn/glm-5.3",
     "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
-    "openai-codex/gpt-5.6-luna"
+    "openai-codex/gpt-5.6-luna",
+    "zai-coding-cn/glm-5.3-flash"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -47,7 +48,7 @@
     "enabled": true,
     "showPruneStatusLine": false,
     "summarizerModel": "openai-codex/gpt-5.6-luna",
-    "summarizerThinking": "high",
+    "summarizerThinking": "low",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
     "quietOversizedSkips": true,

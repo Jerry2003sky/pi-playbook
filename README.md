@@ -8,12 +8,12 @@
 
 | 维度 | 内容 |
 |------|------|
-| **模型策略** | glm-5.3 主力 + 廉价档做杂活，6 个供应商 12 个模型按场景切换 |
+| **模型策略** | glm-5.3 主力 + 廉价档做杂活，6 个供应商 13 个模型按场景切换 |
 | **基础阶段**（2 个） | 联网搜索、会话命名——补 pi 本体最底层的能力缺口 |
 | **进阶阶段**（4 个） | 搜索增强、上下文观察、缓存监控、结构化提问——效率与交互 |
 | **高阶阶段**（2 个） | 子代理、上下文剪枝——架构级改造 |
 | **界面与观测**（3 个） | 工具渲染美化、启动页头（本地定制）、速度仪表 |
-| **自定义子代理** | `fast` 执行代理：便宜模型 + 自包含任务书 + 报告写盘 |
+| **自定义子代理** | `pico` 执行代理：便宜模型 + 自包含任务书 + 报告写盘 |
 | **全局指令** | 委托决策规则、搜索纪律、云盘排除 |
 
 这套配置的价值观概括成一句话：**贵的模型做决策，便宜的模型做执行；上下文能剪就剪，能写盘就不进会话。**
@@ -40,7 +40,7 @@
 | [05-界面与观测](docs/05-界面与观测.md) | 工具渲染美化、启动页头（本地定制）、速度仪表 |
 | [06-settings](docs/06-settings.md) | settings.json 逐块注释 |
 | [07-models](docs/07-models.md) | 模型、思考档位映射 |
-| [08-agents](docs/08-agents.md) | fast 子代理设计 |
+| [08-agents](docs/08-agents.md) | pico 子代理设计 |
 | [09-agents-md](docs/09-agents-md.md) | AGENTS.md 全局指令 |
 
 ## 目录结构
@@ -53,10 +53,10 @@ pi-playbook/
 │   └── pi-claude-code-tui/      # 本地定制插件（完整源码 + 定制说明）
 ├── config/                      # 我的实际配置（已脱敏）
 │   ├── settings.json            #   ~/.pi/agent/settings.json
-│   ├── models.json              #   思考档位覆盖示例（0.84.3+ 上游目录已内置，见 07）
+│   ├── models.json              #   自定义模型 glm-5.3-flash 定义（见 07）
 │   ├── web-search.json          #   ~/.pi/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
-│   ├── agents/fast.md           #   ~/.pi/agent/agents/fast.md
+│   ├── agents/pico.md           #   ~/.pi/agent/agents/pico.md
 │   └── AGENTS.md                #   ~/.pi/agent/AGENTS.md
 ├── LICENSE
 └── .gitignore

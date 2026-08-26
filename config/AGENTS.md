@@ -20,8 +20,8 @@ Fall back to built-in or shell search tools only when the corresponding FFF tool
 
 # Sub-agent Delegation
 
-Default to delegating well-specified work to the `fast` sub-agent via the
-Agent tool (`subagent_type: "fast"`). It runs a low-cost workhorse model at
+Default to delegating well-specified work to the `pico` sub-agent via the
+Agent tool (`subagent_type: "pico"`). It runs a low-cost workhorse model at
 max thinking effort — capable, fast, and far cheaper than the model running
 this session — with the built-in tools plus the fff / web-access extensions
 and skills, in its own fresh session. Delegation keeps raw material (file
@@ -72,14 +72,14 @@ expected behavior, constraints, and a verification step when one exists
 
 - Report-to-disk: when delegating inventory/recon tasks whose findings
   you will consume as reference material (not when the report itself is
-  the user's deliverable), assign a path in the prompt:
-  "Write the full report to ~/.pi/agent/reports/YYYYMMDD-HHMMSS-<slug>.md;
+  the user's deliverable), assign a slug-only path in the prompt:
+  "Write the full report to ~/.pi/agent/reports/<slug>.md;
   return only a 3-5 line summary + the file path + a one-line section
-  list." Parallel agents must get distinct paths.
+  list." Parallel agents must get distinct slugs.
 
 Orchestration:
 - Decompose first: on any multi-part task, split the work into independent
-  slices up front and spawn background fast agents for the delegable slices
+  slices up front and spawn background pico agents for the delegable slices
   BEFORE starting your own slice. Delegate at the start of work, not at
   the end.
 - Mid-task checkpoint: if you are 3 or more tool calls deep into one
@@ -97,5 +97,5 @@ Orchestration:
   implementation slices, tests or docs while you finish the core, a review
   pass while you draft the summary.
 - Steer mid-run if one drifts; skim touched files before reporting edit results to the user.
-- If fast stops and reports missing information or out-of-scope work, resolve
+- If pico stops and reports missing information or out-of-scope work, resolve
   it in the main session instead of re-delegating the same task.
