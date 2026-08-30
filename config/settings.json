@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.3",
+  "lastChangelogVersion": "0.84.4",
   "theme": "dark",
   "defaultProvider": "zai-coding-cn",
   "defaultModel": "glm-5.3",
@@ -48,7 +48,7 @@
     "enabled": true,
     "showPruneStatusLine": false,
     "summarizerModel": "openai-codex/gpt-5.6-luna",
-    "summarizerThinking": "low",
+    "summarizerThinking": "off",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
     "quietOversizedSkips": true,
