@@ -1,0 +1,9 @@
+{
+  "provider": ["openai"],
+  "openaiSearchModel": "gpt-5.6-sol",
+  "xaiSearchModel": "grok-4.6",
+  "workflow": "none",
+  "ssrf": {
+    "allowRanges": ["198.18.0.0/15"]
+  }
+}
