@@ -56,6 +56,7 @@ pi-playbook/
 │   ├── models.json              #   自定义模型 glm-5.3-flash 定义（见 07）
 │   ├── web-search.json          #   ~/.pi/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
+│   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
 │   ├── agents/pico.md           #   ~/.pi/agent/agents/pico.md
 │   └── AGENTS.md                #   ~/.pi/agent/AGENTS.md
 ├── LICENSE
