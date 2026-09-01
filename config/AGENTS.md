@@ -11,12 +11,21 @@ lsof, indexing, or content-search operations against these paths.
 
 # File and Content Search
 
-Always prefer the FFF tools provided by `@ff-labs/pi-fff`:
-- For file and path searches, always prefer `fffind`. Do not use the built-in `find`, shell `find`, or `fd`.
-- For content searches, always prefer `ffgrep`. Do not use the built-in `grep`, shell `grep`, or `rg`.
-- Use `fff-multi-grep` when searching for multiple literal patterns with OR semantics.
+`ffgrep`, `fffind`, and `fff-multi-grep` are FFF-backed
+(`@ff-labs/pi-fff`) — always use them for search and exploration.
+(Sessions created before this change may expose built-in `grep`/`find`
+as active tools; keep preferring the FFF tools.)
 
-Fall back to built-in or shell search tools only when the corresponding FFF tool is unavailable, fails, or cannot perform the required operation. Briefly state the reason before falling back.
+- Content search: `ffgrep`; file/path search: `fffind`; directory
+  listing: `ls`; multiple OR patterns: a single `fff-multi-grep` call.
+- Bound every search with `path` and `limit` (plus `glob` for `ffgrep`);
+  page further results via the returned cursor.
+- Locate first, then `read` with `offset`/`limit` around the hits.
+  Read known paths directly; never dump whole large files.
+- Never use Bash `grep`, `find`, `cat`, or recursive `ls` for discovery —
+  bash output bypasses all limits and floods the context. If the search
+  tools genuinely cannot perform an operation, use `rg` in bash
+  (respects .gitignore; never plain `grep`) and briefly state the reason.
 
 # Sub-agent Delegation
 
@@ -72,10 +81,12 @@ expected behavior, constraints, and a verification step when one exists
 
 - Report-to-disk: when delegating inventory/recon tasks whose findings
   you will consume as reference material (not when the report itself is
-  the user's deliverable), assign a slug-only path in the prompt:
-  "Write the full report to ~/.pi/agent/reports/<slug>.md;
-  return only a 3-5 line summary + the file path + a one-line section
-  list." Parallel agents must get distinct slugs.
+  the user's deliverable), assign a slug in the prompt and require a
+  timestamped filename: "Write the full report to
+  ~/.pi/agent/reports/<timestamp>-<slug>.md, where <timestamp> is the
+  output of `date +%Y%m%d-%H%M%S` run by you; return only a 3-5 line
+  summary + the final file path + a one-line section list." Parallel
+  agents must get distinct slugs.
 
 Orchestration:
 - Decompose first: on any multi-part task, split the work into independent

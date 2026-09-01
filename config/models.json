@@ -1,38 +1,31 @@
 {
   "providers": {
-    "zai-coding-cn": {
+    "zenmux": {
+      "baseUrl": "https://zenmux.ai/api/anthropic",
+      "api": "anthropic-messages",
       "models": [
         {
-          "id": "glm-5.3-flash",
-          "name": "GLM-5.3 Flash",
-          "api": "openai-completions",
-          "baseUrl": "https://open.bigmodel.cn/api/coding/paas/v4",
+          "id": "claude-fable-5:google-vertex",
+          "name": "Claude Fable 5",
           "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 128000,
           "thinkingLevelMap": {
             "off": null,
             "minimal": null,
-            "low": "low",
-            "medium": null,
-            "high": "high",
-            "xhigh": null,
+            "xhigh": "xhigh",
             "max": "max"
           },
-          "input": ["text", "image"],
-          "contextWindow": 1000000,
-          "maxTokens": 131072,
-          "cost": {
-            "input": 0.15,
-            "output": 0.5,
-            "cacheRead": 0.03,
-            "cacheWrite": 0
-          },
           "compat": {
-            "supportsStore": false,
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true,
-            "maxTokensField": "max_tokens",
-            "thinkingFormat": "zai",
-            "zaiToolStream": true
+            "forceAdaptiveThinking": true,
+            "supportsStrictTools": true
+          },
+          "cost": {
+            "input": 10,
+            "output": 50,
+            "cacheRead": 1,
+            "cacheWrite": 12.5
           }
         }
       ]

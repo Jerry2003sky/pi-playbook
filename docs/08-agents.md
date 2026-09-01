@@ -19,7 +19,7 @@ prompt_mode: replace
 inherit_context: false
 extensions: [pi-fff, pi-web-access]
 skills: true
-tools: read, grep, find, ls, bash, edit, write
+tools: read, ls, bash, edit, write
 ---
 ```
 
@@ -37,8 +37,8 @@ tools: read, grep, find, ls, bash, edit, write
 
 两个设计要点：
 
-1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
-2. **模型分工。** 主模型（glm-5.3）干推理和决策，flash 干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
+1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；内置 `grep`/`find` 同样排除在外，搜索统一走 fff 扩展，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
+2. **模型分工。** 主模型（k3）干推理和决策，flash 干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
 
 ## 正文 prompt 的设计
 

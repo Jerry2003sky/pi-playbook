@@ -1,9 +1,16 @@
 {
   "lastChangelogVersion": "0.84.4",
   "theme": "dark",
-  "defaultProvider": "zai-coding-cn",
-  "defaultModel": "glm-5.3",
+  "defaultProvider": "kimi-coding",
+  "defaultModel": "k3",
   "defaultThinkingLevel": "max",
+  "defaultTools": [
+    "read",
+    "bash",
+    "edit",
+    "write",
+    "ls"
+  ],
   "packages": [
     "npm:pi-web-access",
     "npm:pi-context-view",
@@ -31,7 +38,8 @@
     "zai-coding-cn/glm-5.3",
     "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
     "openai-codex/gpt-5.6-luna",
-    "zai-coding-cn/glm-5.3-flash"
+    "zai-coding-cn/glm-5.3-flash",
+    "zenmux/claude-fable-5:google-vertex"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -40,7 +48,7 @@
     "tpsBlazing": 90,
     "display": "tps",
     "useProviderTokens": true,
-    "slidingWindow": 2000,
+    "slidingWindow": 1000,
     "countStrategy": "estimate",
     "endTpsBehavior": "average"
   },
@@ -57,7 +65,7 @@
     "summarizerIdleTimeoutMs": 20000,
     "summarizerMaxTimeoutMs": 100000,
     "protectedTools": [
-      "askuser",
+      "ask_user_question",
       "planmode",
       "Agent",
       "get_subagent_result",

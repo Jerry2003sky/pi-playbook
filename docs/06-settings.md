@@ -22,13 +22,21 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 ## 默认模型
 
 ```json
-"defaultProvider": "zai-coding-cn",
-"defaultModel": "glm-5.3",
+"defaultProvider": "kimi-coding",
+"defaultModel": "k3",
 "defaultThinkingLevel": "max"
 ```
 
-- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。主力是 GLM-5.3（智谱国内站，百万上下文，订阅制）。
-- `defaultThinkingLevel`：`max` 表示默认拉满思考强度。七个档位从 `off` 到 `max`。选 `max` 的前提是模型支持（glm-5.3 支持 low/high/max 三档，选 max 落在最高档），追求质量而非速度。
+- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。主力是 Kimi K3（Moonshot 编程订阅，百万上下文，adaptive thinking）。
+- `defaultThinkingLevel`：`max`，默认拉满思考强度。K3 的 thinkingLevelMap 只显式映射 low/high/max 三档，`max` 正落在最高档，追求质量而非速度。
+
+## defaultTools
+
+```json
+"defaultTools": ["read", "bash", "edit", "write", "ls"]
+```
+
+默认激活的内置工具白名单。内置的 `grep`/`find` 刻意缺席——搜索统一交给 @ff-labs/pi-fff 的 `ffgrep`/`fffind`（纪律见 [09-agents-md.md](09-agents-md.md)），同一能力只留一套工具。
 
 ## packages
 
