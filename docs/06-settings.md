@@ -36,7 +36,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 "defaultTools": ["read", "bash", "edit", "write", "ls"]
 ```
 
-默认激活的内置工具白名单，只管 pi 自己的内置工具。名单里没有 `grep`/`find`——@ff-labs/pi-fff 以 override 模式接管了它们的注册（搜索的 FFF 实现由扩展提供，不经这个白名单），同一能力只留一套工具，纪律见 [09-agents-md.md](09-agents-md.md)。
+默认激活的内置工具白名单，只管 pi 自己的内置工具。搜索能力由 @ff-labs/pi-fff 注册的 `ffgrep`/`fffind` 提供（扩展工具不经这个白名单），全局 AGENTS.md 的搜索纪律点名用它们，见 [09-agents-md.md](09-agents-md.md)。
 
 ## packages
 
@@ -47,7 +47,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
   "npm:pi-web-access",              // 联网搜索与网页抓取
   "npm:pi-context-view",            // 上下文查看
   "npm:pi-cache-graph",             // 提示缓存可视化
-  "npm:@ff-labs/pi-fff",            // FFF 极速搜索（override 模式替换内置 find/grep）
+  "npm:@ff-labs/pi-fff",            // FFF 极速搜索（注册 ffgrep/fffind）
   "npm:pi-claude-code-ui",          // Claude Code 风格 UI
   "npm:@tintinweb/pi-subagents",    // 子代理管理
   "npm:pi-token-speed",             // token 速度显示
