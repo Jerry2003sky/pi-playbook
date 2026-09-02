@@ -3,7 +3,7 @@
   "theme": "dark",
   "defaultProvider": "kimi-coding",
   "defaultModel": "k3",
-  "defaultThinkingLevel": "max",
+  "defaultThinkingLevel": "xhigh",
   "defaultTools": [
     "read",
     "bash",
@@ -39,7 +39,9 @@
     "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
     "openai-codex/gpt-5.6-luna",
     "zai-coding-cn/glm-5.3-flash",
-    "zenmux/claude-fable-5:google-vertex"
+    "zenmux/claude-fable-5-1:google-vertex",
+    "akile-claude/claude-fable-5-1",
+    "akile-gpt/gpt-5.3-codex-spark"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -55,8 +57,8 @@
   "contextPrune": {
     "enabled": true,
     "showPruneStatusLine": false,
-    "summarizerModel": "openai-codex/gpt-5.6-luna",
-    "summarizerThinking": "off",
+    "summarizerModel": "akile-gpt/gpt-5.3-codex-spark",
+    "summarizerThinking": "high",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
     "quietOversizedSkips": true,
@@ -91,7 +93,8 @@
     "autoBudgetThreshold": null,
     "spillThreshold": 16384,
     "spillPreviewBytes": 2048,
-    "budgetTurnDelta": null
+    "budgetTurnDelta": null,
+    "frontierGapThresholdTokens": null
   },
   "quietStartup": false,
   "editorPaddingX": 1

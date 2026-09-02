@@ -5,8 +5,8 @@
       "api": "anthropic-messages",
       "models": [
         {
-          "id": "claude-fable-5:google-vertex",
-          "name": "Claude Fable 5",
+          "id": "claude-fable-5-1:google-vertex",
+          "name": "Claude Fable 5.1",
           "reasoning": true,
           "input": ["text", "image"],
           "contextWindow": 1000000,
@@ -24,8 +24,71 @@
           "cost": {
             "input": 10,
             "output": 50,
-            "cacheRead": 1,
+            "cacheRead": 0.25,
             "cacheWrite": 12.5
+          }
+        }
+      ]
+    },
+    "akile-claude": {
+      "baseUrl": "https://ai.akile.ai",
+      "api": "anthropic-messages",
+      "models": [
+        {
+          "id": "claude-fable-5-1",
+          "name": "Claude Fable 5.1",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "xhigh": "xhigh",
+            "max": "max"
+          },
+          "compat": {
+            "forceAdaptiveThinking": true,
+            "supportsStrictTools": true
+          },
+          "cost": {
+            "input": 1.78,
+            "output": 8.87,
+            "cacheRead": 0.045,
+            "cacheWrite": 2.22
+          }
+        }
+      ]
+    },
+    "akile-gpt": {
+      "baseUrl": "https://ai.akile.ai/v1",
+      "api": "openai-responses",
+      "models": [
+        {
+          "id": "gpt-5.3-codex-spark",
+          "name": "GPT-5.3 Codex Spark",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 128000,
+          "maxTokens": 32000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": null
+          },
+          "compat": {
+            "supportsStrictMode": true,
+            "supportsOpenAIGrammarTools": true
+          },
+          "cost": {
+            "input": 0.078,
+            "output": 0.62,
+            "cacheRead": 0.0078,
+            "cacheWrite": 0
           }
         }
       ]

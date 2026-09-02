@@ -24,11 +24,11 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 ```json
 "defaultProvider": "kimi-coding",
 "defaultModel": "k3",
-"defaultThinkingLevel": "max"
+"defaultThinkingLevel": "xhigh"
 ```
 
 - `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。主力是 Kimi K3（Moonshot 编程订阅，百万上下文，adaptive thinking）。
-- `defaultThinkingLevel`：`max`，默认拉满思考强度。K3 的 thinkingLevelMap 只显式映射 low/high/max 三档，`max` 正落在最高档，追求质量而非速度。
+- `defaultThinkingLevel`：`xhigh`，默认高档思考强度。K3 的 thinkingLevelMap 只显式映射 low/high/max 三档，`xhigh` 不在其中，会自动落到最近的支持档；切到映射了 xhigh 的模型（如 Claude Fable 5.1）时按原档跑。
 
 ## defaultTools
 
@@ -36,7 +36,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 "defaultTools": ["read", "bash", "edit", "write", "ls"]
 ```
 
-默认激活的内置工具白名单。内置的 `grep`/`find` 刻意缺席——搜索统一交给 @ff-labs/pi-fff 的 `ffgrep`/`fffind`（纪律见 [09-agents-md.md](09-agents-md.md)），同一能力只留一套工具。
+默认激活的内置工具白名单，只管 pi 自己的内置工具。名单里没有 `grep`/`find`——@ff-labs/pi-fff 以 override 模式接管了它们的注册（搜索的 FFF 实现由扩展提供，不经这个白名单），同一能力只留一套工具，纪律见 [09-agents-md.md](09-agents-md.md)。
 
 ## packages
 
@@ -47,7 +47,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
   "npm:pi-web-access",              // 联网搜索与网页抓取
   "npm:pi-context-view",            // 上下文查看
   "npm:pi-cache-graph",             // 提示缓存可视化
-  "npm:@ff-labs/pi-fff",            // fffind / ffgrep 极速文件与内容搜索
+  "npm:@ff-labs/pi-fff",            // FFF 极速搜索（override 模式替换内置 find/grep）
   "npm:pi-claude-code-ui",          // Claude Code 风格 UI
   "npm:@tintinweb/pi-subagents",    // 子代理管理
   "npm:pi-token-speed",             // token 速度显示

@@ -11,31 +11,32 @@ lsof, indexing, or content-search operations against these paths.
 
 # File and Content Search
 
-`ffgrep`, `fffind`, and `fff-multi-grep` are FFF-backed
-(`@ff-labs/pi-fff`) — always use them for search and exploration.
-(Sessions created before this change may expose built-in `grep`/`find`
-as active tools; keep preferring the FFF tools.)
+`grep` and `find` are FFF-backed (`@ff-labs/pi-fff`, replacing pi's
+built-ins) — always use them for search and exploration. Parameter
+details live in each tool's description and the injected `grep:` /
+`find:` guidelines — follow those.
 
-- Content search: `ffgrep`; file/path search: `fffind`; directory
-  listing: `ls`; multiple OR patterns: a single `fff-multi-grep` call.
-- Bound every search with `path` and `limit` (plus `glob` for `ffgrep`);
-  page further results via the returned cursor.
-- Locate first, then `read` with `offset`/`limit` around the hits.
-  Read known paths directly; never dump whole large files.
-- Never use Bash `grep`, `find`, `cat`, or recursive `ls` for discovery —
-  bash output bypasses all limits and floods the context. If the search
-  tools genuinely cannot perform an operation, use `rg` in bash
-  (respects .gitignore; never plain `grep`) and briefly state the reason.
+- Content search: `grep`; file/path search: `find`; directory
+  listing: `ls`.
+- Locate with `grep` (content) / `find` (paths), then `read` with
+  `offset`/`limit` around the hits. Read known paths directly; never
+  dump whole large files.
+- Always scope searches with `path`. The working directory is often
+  `~`; an unscoped search matches across the whole home tree. Page
+  further results with `cursor` and keep `limit` at its default.
+- Never use Bash `grep`, `find`, `cat`, or recursive `ls` for
+  discovery — bash output has a coarse cap with no ranking or paging
+  and floods the context. If the search tools genuinely cannot perform
+  an operation, use `rg` in bash (respects .gitignore; never plain
+  `grep`) and briefly state the reason.
 
 # Sub-agent Delegation
 
 Default to delegating well-specified work to the `pico` sub-agent via the
 Agent tool (`subagent_type: "pico"`). It runs a low-cost workhorse model at
 max thinking effort — capable, fast, and far cheaper than the model running
-this session — with the built-in tools plus the fff / web-access extensions
-and skills, in its own fresh session. Delegation keeps raw material (file
-dumps, search hits, command logs) out of this conversation and off the
-expensive model.
+this session. Delegation keeps raw material (file dumps, search hits,
+command logs) out of this conversation and off the expensive model.
 
 Decision rule:
 - Delegate when BOTH hold: (1) you can write a complete spec for it in
@@ -43,7 +44,7 @@ Decision rule:
   only need a summary of, or it is independent of your next steps and can
   run in parallel with them.
 - Do the work inline when either test fails — and always for single
-  lookups, even ones with bulky answers (a fffind/ffgrep hit list, one
+  lookups, even ones with bulky answers (a find/grep hit list, one
   file read): a lone lookup is faster done than delegated.
 - The Keep list below overrides this rule when they conflict.
 - Judge both tests at the whole-request level, never the current step —
