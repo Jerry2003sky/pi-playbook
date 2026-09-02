@@ -14,7 +14,7 @@ Require explicit user approval before running read, find, grep, ls, stat, du, ls
 
 - Locate with `ffgrep`(content) / `fffind`(paths), then `read` with `offset`/`limit` around the hits. Read known paths directly, never dump whole large files.
 - Always scope searches with `path`. The working directory is often `~`, so an unscoped search matches across the whole home tree. Page further results with `cursor` and keep `limit` at its default.
-- Never use `Bash` for searching, listing, or reading files. If `Bash` is necessary, use `rg`(content) / `fd`(paths), briefly state the reason, and bound the output (e.g. `head -50`).
+- Never use `Bash` for searching, listing, or reading files. If `Bash` is necessary, use `rg`(content) / `fd`(paths), briefly state the reason, and bound the output (e.g. `head -50`). rg/fd are not drop-in replacements for grep/find: translate the search intent into the target tool's own syntax, never carry grep/find flags across; run `rg --help` / `fd --help` when unsure.
 
 
 # Sub-agent Delegation
