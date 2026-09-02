@@ -130,13 +130,13 @@
   "deepseek/deepseek-v4-flash",       // 便宜快速
   "deepseek/deepseek-v4-pro",
   "fireworks/accounts/fireworks/models/qwen3p8-max",
-  "kimi-coding/k3",                   // 主力模型，默认
+  "kimi-coding/k3",                   // Moonshot 编程订阅，百万上下文
   "kimi-coding/k3-256k",              // 256K 长上下文版
   "kimi-coding/kimi-for-coding-highspeed",
   "openai-codex/gpt-5.6-sol",         // 高质搜索模型
   "xai/grok-4.6",
   "fireworks/accounts/fireworks/routers/kimi-k3-fast",
-  "zai-coding-cn/glm-5.3",
+  "zai-coding-cn/glm-5.3",            // 主力模型，默认
   "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
   "openai-codex/gpt-5.6-luna",        // 廉价档：会话命名
   "zai-coding-cn/glm-5.3-flash",      // 廉价档：pico 子代理执行
@@ -148,7 +148,8 @@
 
 只放进这个列表的模型会出现在 Ctrl+P 循环里；`/model` 里仍能手动选任何已接入模型。我保留的清单覆盖三档用途：
 
-- **主力**：k3（编程订阅，百万上下文，默认）
+- **主力**：glm-5.3（智谱编程订阅，默认）
+- **长上下文备选**：k3 / k3-256k（Moonshot 编程订阅，百万上下文）
 - **廉价档**：openai-codex/gpt-5.6-luna（会话命名）、glm-5.3-flash（pico 子代理）、akile-gpt/gpt-5.3-codex-spark（剪枝摘要）
 - **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
 

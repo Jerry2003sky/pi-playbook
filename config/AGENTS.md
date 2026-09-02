@@ -8,13 +8,16 @@ Treat these paths as excluded from all file operations:
 
 Require explicit user approval before running read, find, grep, ls, stat, du, lsof, indexing, or content-search operations against these paths.
 
+
 # File and Content Search
 
-`ffgrep` and `fffind` are FFF-backed(`@ff-labs/pi-fff`) — always use them for search and exploration. Parameter details live in each tool's description and the injected `ffgrep:`/`fffind:` guidelines — follow those. Always use the built-in `ls` tools for directory listing.
+The built-in `find`/`grep` tools are FFF-backed (pi-fff override): pre-indexed, frecency-ranked, fuzzy, git-aware. Choosing them or bash is up to you.
 
-- Locate with `ffgrep`(content) / `fffind`(paths), then `read` with `offset`/`limit` around the hits. Read known paths directly, never dump whole large files.
-- Always scope searches with `path`. The working directory is often `~`, so an unscoped search matches across the whole home tree. Page further results with `cursor` and keep `limit` at its default.
-- Never use `Bash` for searching, listing, or reading files. If `Bash` is necessary, use `rg`(content) / `fd`(paths), briefly state the reason, and bound the output (e.g. `head -50`). rg/fd are not drop-in replacements for grep/find: translate the search intent into the target tool's own syntax, never carry grep/find flags across; run `rg --help` / `fd --help` when unsure.
+When searching through bash, prefer `fd` for paths and `rg` for contents over `find`/`grep`:
+- Both silently skip hidden and ignored files by default (rg also skips binary contents). When results look unexpectedly empty, suspect this filtering before concluding the target is absent.
+- When unsure of flags, check `fd --help` / `rg --help`.
+
+Hidden paths such as `~/.pi` (pi's own configuration) are invisible to the built-in tools when the workspace sits outside a git repo — the FFF index skips hidden entries there. Search these through bash, rooted at the hidden directory itself.
 
 
 # Sub-agent Delegation

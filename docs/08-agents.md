@@ -19,7 +19,7 @@ prompt_mode: replace
 inherit_context: false
 extensions: [pi-fff, pi-web-access]
 skills: true
-tools: read, ls, bash, edit, write
+tools: find, grep, ls, bash, read, edit, write
 ---
 ```
 
@@ -33,19 +33,19 @@ tools: read, ls, bash, edit, write
 | `inherit_context` | `false` | 不继承主会话历史——保持隔离，节省上下文 |
 | `extensions` | 两个扩展 | 给子代理配工具扩展：fff（搜索）、web-access（联网） |
 | `skills` | `true` | 加载技能 |
-| `tools` | 白名单 | 只给基础工具，**没有 `Agent` 和网络之外的重量级工具**——控制子代理的能力边界 |
+| `tools` | 白名单 | 七件基础工具（find/grep/ls/bash/read/edit/write），防套娃无 `Agent`——控制子代理的能力边界 |
 
 两个设计要点：
 
-1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；白名单只管内置工具，搜索由 pi-fff 扩展提供——`ffgrep`/`fffind` 就是 FFF 实现，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
-2. **模型分工。** 主模型（k3）干推理和决策，flash 干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
+1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；白名单只管内置工具，pi-fff 的 `override` 模式让白名单里的 `find`/`grep` 就是 FFF 实现，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
+2. **模型分工。** 主模型（glm-5.3）干推理和决策，flash（glm-5.3-flash）干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
 
 ## 正文 prompt 的设计
 
 正文（system prompt）共四段，每段解决一个问题：
 
 1. **自我包含**——“你看到的一切都在 prompt 里”。子代理看不到主会话历史，所以委托方必须写自包含的任务书；这一段让子代理知道缺信息时该“检查一下”还是“停下问”。
-2. **执行纪律**——上来就干，用 FFF 驱动的 grep/find 做搜索，读文件只读任务需要的区域，改动最小化。
+2. **执行纪律**——上来就干；搜索在内置 find/grep（FFF 实现）与 bash 之间自选，bash 侧 fd/rg 优先；读文件只读任务需要的区域，改动最小化。
 3. **返回契约**——最后一条消息是委托方唯一能看到的东西：先说结论、带 file:line、交代假设和遗留。
 4. **大报告规则**——委托方在任务书里给 slug（不带时间戳），子代理自己补时间戳前缀写盘；没给路径且发现超过 ~50 行时自己起 slug。文件落在 `~/.pi/agent/reports/<时间戳>-<slug>.md`，最后消息只带 3-5 行结论 + 路径 + 节清单。这是关键设计：**大文件内容不进主会话上下文**，省主模型的 token。
 
