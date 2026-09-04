@@ -13,9 +13,10 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 | 配置 | 值 | 含义 |
 |------|----|------|
 | `theme` | `"dark"` | 深色主题 |
-| `tuiMode` | `"regular"` | 常规 TUI；可选实验性 `"fullscreen"`（全屏模式） |
+| `tuiMode` | `"fullscreen"` | 实验性全屏 TUI（常规为 `"regular"`），输出区占满终端 |
 | `fullscreenScrollbar` | `"auto"` | 滚动时临时显示滚动条，仅在 fullscreen 模式生效 |
-| `quietStartup` | `false` | 隐藏 pi 默认的启动横幅。之前配 pi-claude-code-tui 自定义启动头时设过 `true`（两者独立，互不影响），后来用回默认横幅，改回 `false` |
+| `fullscreenCopyOnSelect` | `false` | 全屏模式下的选中即复制开关 |
+| `enableSkillCommands` | `false` | 把技能暴露为斜杠命令的开关 |
 | `editorPaddingX` | `1` | 输入编辑器水平留白（0-3），1 档视觉上更舒服 |
 | `lastChangelogVersion` | — | pi 内部记录已读 changelog 版本，别手动改 |
 

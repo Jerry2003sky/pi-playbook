@@ -14,6 +14,7 @@
 | 标题/徽标颜色从主题 accent 改为固定灰白 `#EEEEEE` | 同上 | 页头观感更稳定，不随主题切换变色 |
 | 提示分割线从“最大 22 字符”改为拉满右栏宽度减 1 | 同上 | 与左栏边距对齐 |
 | 输入框从半开放边框（只有上下圆角边）改为全封闭圆角边框 | `extensions/render-utils.ts` | 两侧 │ 边线，新增 padOnly 辅助函数保证边框不截断编辑器行 |
+| `/use-claude-code-tui` / `/use-default-tui` 的选择持久化到 `~/.pi/agent/pi-claude-code-tui.json` | `extensions/claude-code-startup.ts` | 重启后保持所选界面；上游为会话级切换，重启即回 |
 | 移除输入框光标 restyle | 两个文件 | 保留 pi 原生反色光标 |
 
 ## 安装
@@ -26,10 +27,10 @@ cp -r plugins/pi-claude-code-tui ~/.pi/agent/extensions/
 pi
 ```
 
-切换/还原：`/use-default-tui` 回 pi 原生界面。
+切换/还原：`/use-default-tui` 回 pi 原生界面；两个命令的选择都会持久化，重启后保持。
 
 > 为什么不用 npm 安装：这个目录里有我的定制，npm 装的是上游原版。想要原版可以 `npm install pi-claude-code-tui` 后放到同一目录（注意保留本目录的定制 diff）。
 
-## 无配置参数
+## 状态文件
 
-此插件没有配置文件，装上即生效；定制需要改源码（如上表）。
+`~/.pi/agent/pi-claude-code-tui.json` 记录当前界面选择（`useDefault`），由插件在切换时写入、启动时读回；上游原版无此文件。除它之外无配置参数，装上即生效；其余定制需要改源码（如上表）。

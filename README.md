@@ -57,6 +57,7 @@ pi-playbook/
 │   ├── web-search.json          #   ~/.pi/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
+│   ├── pi-claude-code-tui.json  #   ~/.pi/agent/pi-claude-code-tui.json（界面选择状态，见 05）
 │   ├── agents/pico.md           #   ~/.pi/agent/agents/pico.md
 │   └── AGENTS.md                #   ~/.pi/agent/AGENTS.md
 ├── LICENSE

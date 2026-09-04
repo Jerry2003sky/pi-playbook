@@ -142,7 +142,8 @@
   "zai-coding-cn/glm-5.3-flash",      // 廉价档：pico 子代理执行
   "zenmux/claude-fable-5-1:google-vertex",  // 高端：Claude Fable 5.1
   "akile-claude/claude-fable-5-1",    // 高端：Fable 5.1 的低价渠道
-  "akile-gpt/gpt-5.3-codex-spark"     // 廉价档：剪枝摘要
+  "akile-gpt/gpt-5.3-codex-spark",    // 廉价档：剪枝摘要
+  "openai-codex/gpt-6-astra"         // 高端：GPT-6 Astra，272K 上下文
 ]
 ```
 
@@ -151,7 +152,7 @@
 - **主力**：glm-5.3（智谱编程订阅，默认）
 - **长上下文备选**：k3 / k3-256k（Moonshot 编程订阅，百万上下文）
 - **廉价档**：openai-codex/gpt-5.6-luna（会话命名）、glm-5.3-flash（pico 子代理）、akile-gpt/gpt-5.3-codex-spark（剪枝摘要）
-- **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
+- **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-6-astra（272K 上下文）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商
 

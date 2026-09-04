@@ -1,5 +1,5 @@
 {
-  "provider": ["openai"],
+  "provider": "openai",
   "openaiSearchModel": "gpt-5.6-sol",
   "xaiSearchModel": "grok-4.6",
   "workflow": "none",

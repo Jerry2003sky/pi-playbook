@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.0",
   "theme": "dark",
   "defaultProvider": "zai-coding-cn",
   "defaultModel": "glm-5.3",
@@ -25,7 +25,7 @@
     "npm:pi-autoname",
     "npm:@juicesharp/rpiv-ask-user-question"
   ],
-  "tuiMode": "regular",
+  "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto",
   "enabledModels": [
     "deepseek/deepseek-v4-flash",
@@ -43,7 +43,8 @@
     "zai-coding-cn/glm-5.3-flash",
     "zenmux/claude-fable-5-1:google-vertex",
     "akile-claude/claude-fable-5-1",
-    "akile-gpt/gpt-5.3-codex-spark"
+    "akile-gpt/gpt-5.3-codex-spark",
+    "openai-codex/gpt-6-astra"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -52,7 +53,7 @@
     "tpsBlazing": 90,
     "display": "tps",
     "useProviderTokens": true,
-    "slidingWindow": 1000,
+    "slidingWindow": 1500,
     "countStrategy": "estimate",
     "endTpsBehavior": "average"
   },
@@ -62,7 +63,7 @@
     "summarizerModel": "akile-gpt/gpt-5.3-codex-spark",
     "summarizerThinking": "low",
     "pruneOn": "agent-message",
-    "batchingMode": "turn",
+    "batchingMode": "agent-message",
     "quietOversizedSkips": true,
     "minBatchChars": 8000,
     "recoveryGraceTurns": 3,
@@ -98,6 +99,7 @@
     "budgetTurnDelta": null,
     "frontierGapThresholdTokens": null
   },
-  "quietStartup": false,
-  "editorPaddingX": 1
+  "editorPaddingX": 1,
+  "fullscreenCopyOnSelect": false,
+  "enableSkillCommands": false
 }

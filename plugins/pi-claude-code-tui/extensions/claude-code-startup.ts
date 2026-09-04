@@ -1,3 +1,6 @@
+import { homedir } from "node:os";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import {
 	CustomEditor,
 	VERSION,
@@ -310,6 +313,32 @@ let activePiStartupHeader: PiStartupHeader | undefined;
 let workingVerbTimer: NodeJS.Timeout | undefined;
 let workingVerbContext: ExtensionContext | undefined;
 
+// LOCAL MODIFICATION (keep when updating): persisted mode switch.
+// Upstream re-applies the look on every session_start and treats both
+// commands as session-only switches, so /use-default-tui never survives a
+// restart. The choice is stored in ~/.pi/agent/pi-claude-code-tui.json
+// (same convention as pi-autoname.json / pi-fff.json) and honored at startup.
+const STATE_FILE = join(homedir(), ".pi", "agent", "pi-claude-code-tui.json");
+
+function readUseDefault(): boolean {
+	try {
+		return JSON.parse(readFileSync(STATE_FILE, "utf8")).useDefault === true;
+	} catch {
+		return false;
+	}
+}
+
+function writeUseDefault(useDefault: boolean): void {
+	try {
+		mkdirSync(dirname(STATE_FILE), { recursive: true });
+		writeFileSync(STATE_FILE, `${JSON.stringify({ useDefault }, null, 2)}\n`, "utf8");
+	} catch {
+		// Best effort: the in-session switch still works without the file.
+	}
+}
+
+let useDefaultTui = readUseDefault();
+
 function stopWorkingVerbs(ctx?: ExtensionContext): void {
 	if (workingVerbTimer) {
 		clearInterval(workingVerbTimer);
@@ -365,11 +394,15 @@ function applyPiLook(pi: ExtensionAPI, ctx: ExtensionContext): void {
 
 export default function (pi: ExtensionAPI) {
 	pi.on("session_start", (_event, ctx) => {
+		// LOCAL MODIFICATION (keep when updating): skip when /use-default-tui
+		// was persisted earlier; otherwise the look would come back on restart.
+		if (useDefaultTui) return;
 		const applyAfterOtherStartupHandlers = setTimeout(() => applyPiLook(pi, ctx), 0);
 		applyAfterOtherStartupHandlers.unref?.();
 	});
 
 	pi.on("agent_start", (_event, ctx) => {
+		if (useDefaultTui) return; // LOCAL MODIFICATION: working verbs belong to this package's look
 		startWorkingVerbs(ctx);
 	});
 
@@ -386,6 +419,8 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("use-claude-code-tui", {
 		description: "Switch to the pi-claude-code-tui look (Pi header + Codex-style input)",
 		handler: async (_args, ctx) => {
+			useDefaultTui = false; // LOCAL MODIFICATION (keep when updating): persist the choice
+			writeUseDefault(false);
 			applyPiLook(pi, ctx);
 			ctx.ui.notify("Using pi-claude-code-tui", "info");
 		},
@@ -394,6 +429,8 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("use-default-tui", {
 		description: "Switch back to pi's built-in header, footer, editor, and spinner",
 		handler: async (_args, ctx) => {
+			useDefaultTui = true; // LOCAL MODIFICATION (keep when updating): persist the choice
+			writeUseDefault(true);
 			stopWorkingVerbs(ctx);
 			disposeActiveHeader();
 			ctx.ui.setTitle("pi");
