@@ -106,6 +106,33 @@
             "cacheRead": 0.0078,
             "cacheWrite": 0
           }
+        },
+        {
+          "id": "gpt-6-astra",
+          "name": "GPT-6 Astra",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          },
+          "compat": {
+            "supportsStrictMode": true,
+            "supportsOpenAIGrammarTools": true
+          },
+          "cost": {
+            "input": 0.443,
+            "output": 2.215,
+            "cacheRead": 0.0443,
+            "cacheWrite": 0.554
+          }
         }
       ]
     }
@@ -136,7 +163,7 @@
   "openai-codex/gpt-5.6-sol",         // 高质搜索模型
   "xai/grok-4.6",
   "fireworks/accounts/fireworks/routers/kimi-k3-fast",
-  "zai-coding-cn/glm-5.3",            // 主力模型，默认
+  "zai-coding-cn/glm-5.3",            // GLM 备选
   "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
   "openai-codex/gpt-5.6-luna",        // 廉价档：会话命名
   "zai-coding-cn/glm-5.3-flash",      // 廉价档：pico 子代理执行
@@ -152,7 +179,7 @@
 
 - **主力**：akile-gpt/gpt-6-astra（默认，high 思考档位）
 - **长上下文备选**：k3 / k3-256k（Moonshot 编程订阅，百万上下文）
-- **廉价档**：openai-codex/gpt-5.6-luna（会话命名）、glm-5.3-flash（pico 子代理）、akile-gpt/gpt-5.3-codex-spark（剪枝摘要）
+- **廉价档**：openai-codex/gpt-5.6-luna（会话命名）、zai-coding-cn/glm-5.3-flash（pico 子代理）、akile-gpt/gpt-5.3-codex-spark（剪枝摘要）
 - **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-6-astra（百万级上下文）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商

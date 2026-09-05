@@ -38,7 +38,7 @@ tools: find, grep, ls, bash, read, edit, write
 两个设计要点：
 
 1. **工具白名单是权限边界。** 子代理没有 `Agent` 工具（不让它再套娃），也没有删除类危险操作的空间；白名单只管内置工具，pi-fff 的 `override` 模式让白名单里的 `find`/`grep` 就是 FFF 实现，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）；正文里又加了一条“禁止 rm -rf / git push 等破坏性操作”的双保险。
-2. **模型分工。** 主模型（glm-5.3）干推理和决策，flash（glm-5.3-flash）干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
+2. **模型分工。** 主模型（GPT-6 Astra）干推理和决策，flash（glm-5.3-flash）干执行。委托任务的规格写清楚，flash 照着执行即可，每 token 成本差好几倍。
 
 ## 正文 prompt 的设计
 
