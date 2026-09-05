@@ -9,7 +9,7 @@
 
 完整文件见 [`config/models.json`](../config/models.json)。
 
-> **这份文件经历过两次换血。** 早期它放的是 thinkingLevelMap 覆盖——pi 0.84.3 把那些修正（glm-5.3 等中国站模型、grok-4.6 的档位映射）收录进上游目录后，覆盖全部退役；之后手工接入的 GLM-5.3 Flash 定义也被上游收录，同样退役。现在它只干一件事：定义三个自定义供应商，把聚合网关后面的模型接进 pi——zenmux 与 akile 两个渠道的 Claude Fable 5.1，以及 akile 的 GPT-5.3 Codex Spark（后者是剪枝摘要的廉价档，见 [04-高阶阶段.md](04-高阶阶段.md)）。
+> **这份文件经历过两次换血。** 早期它放的是 thinkingLevelMap 覆盖——pi 0.84.3 把那些修正（glm-5.3 等中国站模型、grok-4.6 的档位映射）收录进上游目录后，覆盖全部退役；之后手工接入的 GLM-5.3 Flash 定义也被上游收录，同样退役。现在它只干一件事：定义三个自定义供应商，把聚合网关后面的模型接进 pi——zenmux 与 akile 两个渠道的 Claude Fable 5.1，以及 akile 的 GPT-5.3 Codex Spark 与 GPT-6 Astra（前者是剪枝摘要的廉价档，见 [04-高阶阶段.md](04-高阶阶段.md)）。
 
 ## 自定义供应商与模型定义
 
@@ -143,16 +143,17 @@
   "zenmux/claude-fable-5-1:google-vertex",  // 高端：Claude Fable 5.1
   "akile-claude/claude-fable-5-1",    // 高端：Fable 5.1 的低价渠道
   "akile-gpt/gpt-5.3-codex-spark",    // 廉价档：剪枝摘要
-  "openai-codex/gpt-6-astra"         // 高端：GPT-6 Astra，272K 上下文
+  "openai-codex/gpt-6-astra",        // 高端：GPT-6 Astra
+  "akile-gpt/gpt-6-astra"             // 当前默认：GPT-6 Astra
 ]
 ```
 
 只放进这个列表的模型会出现在 Ctrl+P 循环里；`/model` 里仍能手动选任何已接入模型。我保留的清单覆盖三档用途：
 
-- **主力**：glm-5.3（智谱编程订阅，默认）
+- **主力**：akile-gpt/gpt-6-astra（默认，high 思考档位）
 - **长上下文备选**：k3 / k3-256k（Moonshot 编程订阅，百万上下文）
 - **廉价档**：openai-codex/gpt-5.6-luna（会话命名）、glm-5.3-flash（pico 子代理）、akile-gpt/gpt-5.3-codex-spark（剪枝摘要）
-- **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-6-astra（272K 上下文）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
+- **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、gpt-6-astra（百万级上下文）、gpt-5.6-sol、grok-4.6、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商
 

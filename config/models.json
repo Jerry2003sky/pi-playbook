@@ -90,6 +90,33 @@
             "cacheRead": 0.0078,
             "cacheWrite": 0
           }
+        },
+        {
+          "id": "gpt-6-astra",
+          "name": "GPT-6 Astra",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1050000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          },
+          "compat": {
+            "supportsStrictMode": true,
+            "supportsOpenAIGrammarTools": true
+          },
+          "cost": {
+            "input": 0.443,
+            "output": 2.215,
+            "cacheRead": 0.0443,
+            "cacheWrite": 0.554
+          }
         }
       ]
     }

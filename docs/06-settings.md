@@ -23,13 +23,13 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 ## 默认模型
 
 ```json
-"defaultProvider": "zai-coding-cn",
-"defaultModel": "glm-5.3",
-"defaultThinkingLevel": "xhigh"
+"defaultProvider": "akile-gpt",
+"defaultModel": "gpt-6-astra",
+"defaultThinkingLevel": "high"
 ```
 
-- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。主力是 GLM-5.3（智谱编程订阅，zai-coding-cn 供应商，与 pico 子代理用的 glm-5.3-flash 同门）。
-- `defaultThinkingLevel`：`xhigh`，默认高档思考强度。模型 `thinkingLevelMap` 里缺的档位会自动落到最近的支持档；切到映射了 xhigh 的模型（如 Claude Fable 5.1）时按原档跑。
+- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6 Astra（akile-gpt 供应商，high 思考档位）。
+- `defaultThinkingLevel`：`high`，默认高档思考强度。模型 `thinkingLevelMap` 里缺的档位会自动落到最近的支持档；切到映射了 xhigh 的模型（如 Claude Fable 5.1）时按原档跑。
 
 ## defaultTools
 
