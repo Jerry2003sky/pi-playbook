@@ -1,7 +1,7 @@
 ---
-description: Default delegation target for well-specified work — codebase recon, packaged search/read errands, implementation from a clear spec, mechanical edits, tests, review passes, bulky-output commands, web research. Much cheaper than the main model and keeps raw output out of the main context. Give it a self-contained prompt; it sees nothing else.
+description: Executes substantial, well-scoped tasks selected for delegation by the parent. Best suited to independent parallel work or large bounded investigations with concise results. Routine lookups, short Q&A, and small edits stay with the parent. Much cheaper than the main model and keeps raw output out of the main context. Give it a self-contained prompt; it sees nothing else.
 display_name: Pico
-model: zai-coding-cn/glm-5.3-flash
+model: deepseek/deepseek-v4.1-flash-expires-on-0910
 thinking: max
 prompt_mode: replace
 inherit_context: false

@@ -22,7 +22,7 @@ Hidden paths such as `~/.pi` (pi's own configuration) are invisible to the built
 
 # Sub-agent Delegation
 
-Default to delegating well-specified work to the `pico` sub-agent via the Agent tool (`subagent_type: "pico"`). It runs a low-cost workhorse model at max thinking effort — capable, fast, and far cheaper than the model running this session. Delegation keeps raw material (file dumps, search hits, command logs) out of this conversation and off the expensive model.
+If at any point you can parallelize work by delegating tasks to the `pico` sub-agent via the Agent tool (`subagent_type: "pico"`), you should do so using collaboration tools if it could save time or improve quality. It runs a low-cost workhorse model at max thinking effort — capable, fast, and far cheaper than the model running this session.
 
 Decision rule:
 - Delegate when BOTH hold: (1) you can write a complete spec for it in one prompt, and (2) it either fills your context with raw material you only need a summary of, or it is independent of your next steps and can run in parallel with them.
@@ -51,8 +51,7 @@ Prompt contract: the sub-agent sees ONLY your prompt — no history, no AGENTS.m
 - Report-to-disk: when delegating inventory/recon tasks whose findings you will consume as reference material (not when the report itself is the user's deliverable), assign a slug in the prompt and require a timestamped filename: "Write the full report to ~/.pi/agent/reports/<timestamp>-<slug>.md, where <timestamp> is the output of `date +%Y%m%d-%H%M%S` run by you; return only a 3-5 line summary + the final file path + a one-line section list." Parallel agents must get distinct slugs.
 
 Orchestration:
-- Decompose first: on any multi-part task, split the work into independent slices up front and spawn background pico agents for the delegable slices BEFORE starting your own slice. Delegate at the start of work, not at the end.
-- Mid-task checkpoint: if you are 3 or more tool calls deep into one sub-question, stop and hand off the rest as a packaged errand, including what you have learned so far in the prompt.
+- Decompose first: on any multi-part task, split the work into independent slices up front and spawn background pico agents for the delegable slices BEFORE starting your own slice. Do not delegate at the end of work.
 - Foreground is for dependencies: call foreground when your very next step needs the result — including a packaged serial errand, where the wait is the accepted price for a clean context and a cheaper model. Everything else runs in background.
 - Batch parallel spawns into a single turn so completion notifications arrive grouped. Keep slices file-disjoint — overlapping edits collide.
 - Never idle-wait: while background agents run, keep working on your own slice; consolidate when completion notifications arrive.

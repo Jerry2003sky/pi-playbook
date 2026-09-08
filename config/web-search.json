@@ -1,6 +1,6 @@
 {
   "provider": ["openai", "xai"],
-  "openaiSearchModel": "gpt-5.6-sol",
+  "openaiSearchModel": "gpt-6-astra",
   "xaiSearchModel": "grok-4.6",
   "xaiSearchTools": ["x_search"],
   "workflow": "none",

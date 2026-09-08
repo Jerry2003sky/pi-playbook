@@ -119,6 +119,34 @@
           }
         }
       ]
+    },
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com",
+      "api": "openai-completions",
+      "models": [
+        {
+          "reasoning": true,
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "maxTokensField": "max_tokens",
+            "requiresReasoningContentOnAssistantMessages": true,
+            "thinkingFormat": "deepseek"
+          },
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "max": "max"
+          },
+          "id": "deepseek-v4.1-flash-expires-on-0910",
+          "name": "DeepSeek V4.1 Flash (Expires 0910)",
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 134144
+        }
+      ]
     }
   }
 }

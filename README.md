@@ -1,6 +1,6 @@
 # pi-playbook
 
-一套 [pi](https://github.com/earendilw/pi)（@earendil-works/pi-coding-agent）的**配置参考手册**。
+一套 [pi](https://github.com/earendil-works/pi)（@earendil-works/pi-coding-agent）的**配置参考手册**。
 
 这份仓库把一套真实使用中的 pi 配置拆开讲透：每类配置解决什么问题、每个插件为什么装、每个参数是什么含义。配置是本仓库作者的，讲解面向所有想理解 pi 的人。
 
@@ -8,7 +8,7 @@
 
 | 维度 | 内容 |
 |------|------|
-| **模型策略** | GPT-6 Astra 主力 + 廉价档做杂活，9 个供应商 18 个模型按场景切换 |
+| **模型策略** | GPT-6 Astra 主力 + 廉价档做杂活，10 个供应商 20 个模型按场景切换 |
 | **基础阶段**（2 个） | 联网搜索、会话命名——补 pi 本体最底层的能力缺口 |
 | **进阶阶段**（4 个） | 搜索增强、上下文观察、缓存监控、结构化提问——效率与交互 |
 | **高阶阶段**（2 个） | 子代理、上下文剪枝——架构级改造 |
@@ -53,7 +53,7 @@ pi-playbook/
 │   └── pi-claude-code-tui/      # 本地定制插件（完整源码 + 定制说明）
 ├── config/                      # 我的实际配置（已脱敏）
 │   ├── settings.json            #   ~/.pi/agent/settings.json
-│   ├── models.json              #   自定义供应商接入（zenmux / akile，见 07）
+│   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + deepseek 内置扩展，见 07）
 │   ├── web-search.json          #   ~/.pi/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）

@@ -1,9 +1,16 @@
 {
-  "lastChangelogVersion": "0.85.0",
+  "lastChangelogVersion": "0.85.1",
   "theme": "dark",
-  "defaultProvider": "akile-gpt",
+  "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6-astra",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "max",
+  "modelThinkingLevels": {
+    "openai-codex/gpt-6-astra": "medium",
+    "akile-gpt/gpt-6-astra": "medium",
+    "zai-coding-cn/glm-5.3": "max",
+    "kimi-coding/k3": "max",
+    "openai-codex/gpt-5.6-sol": "high"
+  },
   "defaultTools": [
     "find",
     "grep",
@@ -45,7 +52,9 @@
     "akile-claude/claude-fable-5-1",
     "akile-gpt/gpt-5.3-codex-spark",
     "openai-codex/gpt-6-astra",
-    "akile-gpt/gpt-6-astra"
+    "akile-gpt/gpt-6-astra",
+    "cerebras/qwen-3.8-27b",
+    "deepseek/deepseek-v4.1-flash-expires-on-0910"
   ],
   "tokenSpeed": {
     "tpsSlow": 0,
@@ -102,5 +111,8 @@
   },
   "editorPaddingX": 1,
   "fullscreenCopyOnSelect": false,
-  "enableSkillCommands": false
+  "enableSkillCommands": false,
+  "skills": [
+    "-skills/guizang-ppt-skill/SKILL.md"
+  ]
 }
