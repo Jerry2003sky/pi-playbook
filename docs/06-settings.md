@@ -14,7 +14,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 |------|----|------|
 | `theme` | `"dark"` | 深色主题 |
 | `tuiMode` | `"fullscreen"` | 实验性全屏 TUI（常规为 `"regular"`），输出区占满终端 |
-| `fullscreenScrollbar` | `"auto"` | 滚动时临时显示滚动条，仅在 fullscreen 模式生效 |
+| `fullscreenScrollbar` | `"auto"` | 滚动时或指针悬停在该列轨道上时临时显示滚动条，仅在 fullscreen 模式生效 |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下的选中即复制开关 |
 | `editorPaddingX` | `1` | 输入编辑器水平留白（0-3），1 档视觉上更舒服 |
 | `lastChangelogVersion` | `"0.85.1"` | pi 内部记录已读 changelog 版本，别手动改 |
@@ -41,13 +41,14 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
   "akile-gpt/gpt-6-astra": "medium",
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
+  "kimi-coding/kimi-for-coding": "max",
   "openai-codex/gpt-5.6-sol": "high"
 }
 ```
 
 - `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6 Astra，走 openai-codex 订阅渠道。
 - `defaultThinkingLevel`：`max`，全局兜底思考档，只在模型没有专属条目时生效。
-- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。因此按这份配置启动，Astra 用 medium，GLM-5.3 与 K3 用 max，Sol 用 high。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
+- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。因此按这份配置启动，Astra 用 medium，GLM-5.3、K3 与 kimi-for-coding 用 max，Sol 用 high。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
 - `/model` 切换也优先用显式档位、模型专属条目和全局默认；三者均未设置时沿用当前会话档位。续接会话优先恢复会话记录。`/settings` 的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 的手选调整当前档位，Ctrl+S 则保存 `defaultThinkingLevel`。
 
 ## defaultTools
@@ -62,7 +63,7 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 
 10 个 npm 包，pi 启动时加载它们的扩展、技能和命令。按阶段分组介绍见 [02-基础阶段.md](02-基础阶段.md)、[03-进阶阶段.md](03-进阶阶段.md)、[04-高阶阶段.md](04-高阶阶段.md) 与 [05-界面与观测.md](05-界面与观测.md)：
 
-```json
+```jsonc
 "packages": [
   "npm:pi-web-access",              // 联网搜索与网页抓取
   "npm:pi-context-view",            // 上下文查看

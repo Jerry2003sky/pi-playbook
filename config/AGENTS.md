@@ -52,7 +52,7 @@ Prompt contract: the sub-agent sees ONLY your prompt — no history, no AGENTS.m
 
 Orchestration:
 - Decompose first: on any multi-part task, split the work into independent slices up front and spawn background pico agents for the delegable slices BEFORE starting your own slice. Do not delegate at the end of work.
-- Foreground is for dependencies: call foreground when your very next step needs the result — including a packaged serial errand, where the wait is the accepted price for a clean context and a cheaper model. Everything else runs in background.
+- Everything else runs in background, never in foreground.
 - Batch parallel spawns into a single turn so completion notifications arrive grouped. Keep slices file-disjoint — overlapping edits collide.
 - Never idle-wait: while background agents run, keep working on your own slice; consolidate when completion notifications arrive.
 - Typical fan-outs: task-start recon (2-3 parallel searches), separable implementation slices, tests or docs while you finish the core, a review pass while you draft the summary.

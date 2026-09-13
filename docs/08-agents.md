@@ -13,7 +13,7 @@
 ---
 description: Executes substantial, well-scoped tasks selected for delegation by the parent. Best suited to independent parallel work or large bounded investigations with concise results. Routine lookups, short Q&A, and small edits stay with the parent. Much cheaper than the main model and keeps raw output out of the main context. Give it a self-contained prompt; it sees nothing else.
 display_name: Pico
-model: deepseek/deepseek-v4.1-flash-expires-on-0910
+model: deepseek/deepseek-flash
 thinking: max
 prompt_mode: replace
 inherit_context: false
@@ -27,7 +27,7 @@ tools: find, grep, ls, bash, read, edit, write
 |------|------|------|
 | `description` | 一段英文 | 出现在 `Agent` 工具的 `subagent_type` 描述里，主模型选型时读它；这里把范围收窄到“父代理挑出来的大块任务”——适合独立并行工作或结果简洁的大范围调查，常规查找、短问答和小改留在主会话 |
 | `display_name` | `Pico` | 界面上显示的名字 |
-| `model` | `deepseek/deepseek-v4.1-flash-expires-on-0910` | 子代理用的模型，DeepSeek 的执行档，由 `models.json` 给内置 deepseek provider 追加（见 [07-models.md](07-models.md)）；ID 带 0910 到期标注，换模型时同步更新这里、models.json 和 settings.json 的 enabledModels |
+| `model` | `deepseek/deepseek-flash` | 子代理用的模型，DeepSeek 的执行档；接入与思考档位见 [07-models.md](07-models.md)。换模型时同步检查这里、models.json 和 settings.json 的 enabledModels |
 | `thinking` | `max` | 执行档模型成本低，思考强度拉满也划算，效果显著好于低档 |
 | `prompt_mode` | `replace` | 正文整体替换默认 system prompt（`append` 是追加） |
 | `inherit_context` | `false` | 不继承主会话历史——保持隔离，节省上下文 |
@@ -38,7 +38,7 @@ tools: find, grep, ls, bash, read, edit, write
 两个设计要点：
 
 1. **工具白名单限定可用工具。** 这份配置列出文件工具与 `bash`；pi-fff 的 `override` 模式提供 FFF 版 `find`/`grep`，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）。`bash` 仍具备删除、推送等能力；正文要求这些操作取得任务的显式授权，执行安全依赖代理遵守指令。嵌套委托由子代理插件的权限设置控制。
-2. **模型分工。** 主模型（GPT-6 Astra）干推理和决策，DeepSeek V4.1 Flash 干执行。委托任务的规格写清楚，执行档照着执行即可，主力模型的 token 留给决策。
+2. **模型分工。** 主模型（GPT-6 Astra）干推理和决策，DeepSeek Flash 干执行。委托任务的规格写清楚，执行档照着执行即可，主力模型的 token 留给决策。
 
 ## 正文 prompt 的设计
 

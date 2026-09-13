@@ -35,9 +35,9 @@
 |------|------|
 | [01-理念与路线](docs/01-理念与路线.md) | 三缺口、三条理念、阶段划分逻辑 |
 | [02-基础阶段](docs/02-基础阶段.md) | 联网、会话命名（含阶段〇：装 pi、配模型） |
-| [03-进阶阶段](docs/03-进阶阶段.md) | fff 搜索增强、自动压缩、输出压缩、上下文观察、缓存监控、结构化提问 |
+| [03-进阶阶段](docs/03-进阶阶段.md) | fff 搜索增强、上下文观察、缓存监控、结构化提问 |
 | [04-高阶阶段](docs/04-高阶阶段.md) | 子代理、上下文剪枝 |
-| [05-界面与观测](docs/05-界面与观测.md) | 工具渲染美化、启动页头（本地定制）、速度仪表 |
+| [05-界面与观测](docs/05-界面与观测.md) | 工具渲染美化、启动页头（本地定制）、速度仪表、快捷键 |
 | [06-settings](docs/06-settings.md) | settings.json 逐块注释 |
 | [07-models](docs/07-models.md) | 模型、思考档位映射 |
 | [08-agents](docs/08-agents.md) | pico 子代理设计 |
@@ -53,7 +53,8 @@ pi-playbook/
 │   └── pi-claude-code-tui/      # 本地定制插件（完整源码 + 定制说明）
 ├── config/                      # 我的实际配置（已脱敏）
 │   ├── settings.json            #   ~/.pi/agent/settings.json
-│   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + deepseek 内置扩展，见 07）
+│   ├── keybindings.json         #   ~/.pi/agent/keybindings.json（见 05）
+│   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + kimi-coding 模型覆盖，见 07）
 │   ├── web-search.json          #   ~/.pi/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
@@ -68,7 +69,7 @@ pi-playbook/
 
 文档分两条线。主线是阶段文档（02–05），每个插件一节：它做什么、我为什么装、参数手册、我的配置。支线（06–09）讲 pi 本体配置和我自己写的东西。
 
-`config/` 目录放的是我的实际配置文件，文档里每处讲解都对应其中一份。参数手册列的是插件的完整参数面；我的配置块严格展示文件实际内容，未设置的参数即插件默认值。
+`config/` 目录放的是本机配置的脱敏副本，文档中的“我的配置”块与对应文件保持一致。个人家目录统一写成 `~`；若配置需要引用凭证，使用环境变量名占位，并按自己的环境设置。安装示例标注本机已安装版本；`settings.json` 的包来源保持本机的无版本写法。参数手册解释常用配置及相关行为，未设置的参数采用插件默认值。`auth.json`、模型缓存和会话等运行数据保留在本机。
 
 ## 致谢
 

@@ -9,6 +9,7 @@
     "akile-gpt/gpt-6-astra": "medium",
     "zai-coding-cn/glm-5.3": "max",
     "kimi-coding/k3": "max",
+    "kimi-coding/kimi-for-coding": "max",
     "openai-codex/gpt-5.6-sol": "high"
   },
   "defaultTools": [
@@ -35,7 +36,6 @@
   "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto",
   "enabledModels": [
-    "deepseek/deepseek-v4-flash",
     "deepseek/deepseek-v4-pro",
     "fireworks/accounts/fireworks/models/qwen3p8-max",
     "kimi-coding/k3",
@@ -54,23 +54,28 @@
     "openai-codex/gpt-6-astra",
     "akile-gpt/gpt-6-astra",
     "cerebras/qwen-3.8-27b",
-    "deepseek/deepseek-v4.1-flash-expires-on-0910"
+    "kimi-coding/kimi-for-coding",
+    "deepseek/deepseek-flash"
   ],
   "tokenSpeed": {
-    "tpsSlow": 0,
-    "tpsMedium": 30,
-    "tpsFast": 60,
-    "tpsBlazing": 90,
     "display": "tps",
     "useProviderTokens": true,
     "slidingWindow": 1500,
     "countStrategy": "estimate",
-    "endTpsBehavior": "average"
+    "endTpsBehavior": "average",
+    "icon": "",
+    "updateInterval": 100,
+    "thresholds": {
+      "slow": 0,
+      "medium": 30,
+      "fast": 60,
+      "blazing": 90
+    }
   },
   "contextPrune": {
     "enabled": true,
     "showPruneStatusLine": false,
-    "summarizerModel": "akile-gpt/gpt-5.3-codex-spark",
+    "summarizerModel": "deepseek/deepseek-flash",
     "summarizerThinking": "low",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
