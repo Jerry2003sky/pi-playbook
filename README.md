@@ -8,7 +8,7 @@
 
 | 维度 | 内容 |
 |------|------|
-| **模型策略** | GPT-6 Astra 主力 + 廉价档做杂活，10 个供应商 20 个模型按场景切换 |
+| **模型策略** | GPT-6 Sol 主力 + 廉价档做杂活，10 个供应商 17 个模型按场景切换 |
 | **基础阶段**（2 个） | 联网搜索、会话命名——补 pi 本体最底层的能力缺口 |
 | **进阶阶段**（4 个） | 搜索增强、上下文观察、缓存监控、结构化提问——效率与交互 |
 | **高阶阶段**（2 个） | 子代理、上下文剪枝——架构级改造 |
@@ -51,11 +51,11 @@ pi-playbook/
 ├── docs/                        # 讲解文档，见上方导航
 ├── plugins/
 │   └── pi-claude-code-tui/      # 本地定制插件（完整源码 + 定制说明）
-├── config/                      # 我的实际配置（已脱敏）
+├── config/                      # 本机配置的脱敏副本
 │   ├── settings.json            #   ~/.pi/agent/settings.json
 │   ├── keybindings.json         #   ~/.pi/agent/keybindings.json（见 05）
 │   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + kimi-coding 模型覆盖，见 07）
-│   ├── web-search.json          #   ~/.pi/web-search.json
+│   ├── web-search.json          #   ~/.pi/agent/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
 │   ├── pi-claude-code-tui.json  #   ~/.pi/agent/pi-claude-code-tui.json（界面选择状态，见 05）
@@ -69,7 +69,9 @@ pi-playbook/
 
 文档分两条线。主线是阶段文档（02–05），每个插件一节：它做什么、我为什么装、参数手册、我的配置。支线（06–09）讲 pi 本体配置和我自己写的东西。
 
-`config/` 目录放的是本机配置的脱敏副本，文档中的“我的配置”块与对应文件保持一致。个人家目录统一写成 `~`；若配置需要引用凭证，使用环境变量名占位，并按自己的环境设置。安装示例标注本机已安装版本；`settings.json` 的包来源保持本机的无版本写法。参数手册解释常用配置及相关行为，未设置的参数采用插件默认值。`auth.json`、模型缓存和会话等运行数据保留在本机。
+`config/` 目录放的是本机配置的脱敏副本，文档中的“我的配置”块与对应文件保持一致。个人家目录统一写成 `~`；若配置需要引用凭证，使用环境变量名占位，并按自己的环境设置。安装示例标注本机已安装版本；`settings.json` 的包来源保持本机的无版本写法。参数手册解释常用配置及相关行为，未设置的参数采用插件默认值。
+
+`~/.agents/skills/` 下的外部技能由本机独立管理；本仓库记录 `settings.json` 中的技能发现设置。`auth.json`、模型缓存和会话等运行数据保留在本机。
 
 ## 致谢
 

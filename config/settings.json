@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "0.87.1",
   "theme": "dark",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-astra",
+  "defaultModel": "gpt-6-sol",
   "defaultThinkingLevel": "max",
   "modelThinkingLevels": {
     "openai-codex/gpt-6-astra": "medium",
@@ -10,7 +10,8 @@
     "zai-coding-cn/glm-5.3": "max",
     "kimi-coding/k3": "max",
     "kimi-coding/kimi-for-coding": "max",
-    "openai-codex/gpt-5.6-sol": "high"
+    "openai-codex/gpt-5.6-sol": "high",
+    "openai-codex/gpt-6-sol": "xhigh"
   },
   "defaultTools": [
     "find",
@@ -37,25 +38,22 @@
   "fullscreenScrollbar": "auto",
   "enabledModels": [
     "deepseek/deepseek-v4-pro",
-    "fireworks/accounts/fireworks/models/qwen3p8-max",
     "kimi-coding/k3",
     "kimi-coding/k3-256k",
     "kimi-coding/kimi-for-coding-highspeed",
-    "openai-codex/gpt-5.6-sol",
-    "xai/grok-4.6",
     "fireworks/accounts/fireworks/routers/kimi-k3-fast",
     "zai-coding-cn/glm-5.3",
-    "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
-    "openai-codex/gpt-5.6-luna",
     "zai-coding-cn/glm-5.3-flash",
     "zenmux/claude-fable-5-1:google-vertex",
     "akile-claude/claude-fable-5-1",
-    "akile-gpt/gpt-5.3-codex-spark",
     "openai-codex/gpt-6-astra",
     "akile-gpt/gpt-6-astra",
     "cerebras/qwen-3.8-27b",
     "kimi-coding/kimi-for-coding",
-    "deepseek/deepseek-flash"
+    "deepseek/deepseek-flash",
+    "xai/grok-4.7",
+    "openai-codex/gpt-6-sol",
+    "openai-codex/gpt-6-luna"
   ],
   "tokenSpeed": {
     "display": "tps",
@@ -76,7 +74,7 @@
     "enabled": true,
     "showPruneStatusLine": false,
     "summarizerModel": "deepseek/deepseek-flash",
-    "summarizerThinking": "low",
+    "summarizerThinking": "off",
     "pruneOn": "agent-message",
     "batchingMode": "agent-message",
     "quietOversizedSkips": true,
@@ -119,5 +117,8 @@
   "enableSkillCommands": false,
   "skills": [
     "-skills/guizang-ppt-skill/SKILL.md"
-  ]
+  ],
+  "compaction": {
+    "enabled": true
+  }
 }

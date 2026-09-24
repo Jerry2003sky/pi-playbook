@@ -22,7 +22,10 @@
           "id": "claude-fable-5-1:google-vertex",
           "name": "Claude Fable 5.1",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 128000,
           "thinkingLevelMap": {
@@ -52,7 +55,10 @@
           "id": "claude-fable-5-1",
           "name": "Claude Fable 5.1",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 128000,
           "thinkingLevelMap": {
@@ -79,37 +85,13 @@
       "api": "openai-responses",
       "models": [
         {
-          "id": "gpt-5.3-codex-spark",
-          "name": "GPT-5.3 Codex Spark",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 128000,
-          "maxTokens": 32000,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "xhigh",
-            "max": null
-          },
-          "compat": {
-            "supportsStrictMode": true,
-            "supportsOpenAIGrammarTools": true
-          },
-          "cost": {
-            "input": 0.078,
-            "output": 0.62,
-            "cacheRead": 0.0078,
-            "cacheWrite": 0
-          }
-        },
-        {
           "id": "gpt-6-astra",
           "name": "GPT-6 Astra",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1050000,
           "maxTokens": 128000,
           "thinkingLevelMap": {

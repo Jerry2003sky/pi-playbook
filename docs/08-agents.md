@@ -38,7 +38,7 @@ tools: find, grep, ls, bash, read, edit, write
 两个设计要点：
 
 1. **工具白名单限定可用工具。** 这份配置列出文件工具与 `bash`；pi-fff 的 `override` 模式提供 FFF 版 `find`/`grep`，与全局搜索纪律一致（见 [09-agents-md.md](09-agents-md.md)）。`bash` 仍具备删除、推送等能力；正文要求这些操作取得任务的显式授权，执行安全依赖代理遵守指令。嵌套委托由子代理插件的权限设置控制。
-2. **模型分工。** 主模型（GPT-6 Astra）干推理和决策，DeepSeek Flash 干执行。委托任务的规格写清楚，执行档照着执行即可，主力模型的 token 留给决策。
+2. **模型分工。** 主模型（GPT-6 Sol）干推理和决策，DeepSeek Flash 干执行。委托任务的规格写清楚，执行档照着执行即可，主力模型的 token 留给决策。
 
 ## 正文 prompt 的设计
 

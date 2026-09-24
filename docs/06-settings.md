@@ -17,7 +17,7 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 | `fullscreenScrollbar` | `"auto"` | 滚动时或指针悬停在该列轨道上时临时显示滚动条，仅在 fullscreen 模式生效 |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下的选中即复制开关 |
 | `editorPaddingX` | `1` | 输入编辑器水平留白（0-3），1 档视觉上更舒服 |
-| `lastChangelogVersion` | `"0.85.1"` | pi 内部记录已读 changelog 版本，别手动改 |
+| `lastChangelogVersion` | `"0.87.1"` | pi 内部记录已读 changelog 版本，别手动改 |
 
 ## 技能发现
 
@@ -34,7 +34,7 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 
 ```json
 "defaultProvider": "openai-codex",
-"defaultModel": "gpt-6-astra",
+"defaultModel": "gpt-6-sol",
 "defaultThinkingLevel": "max",
 "modelThinkingLevels": {
   "openai-codex/gpt-6-astra": "medium",
@@ -42,14 +42,25 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
   "kimi-coding/kimi-for-coding": "max",
-  "openai-codex/gpt-5.6-sol": "high"
+  "openai-codex/gpt-5.6-sol": "high",
+  "openai-codex/gpt-6-sol": "xhigh"
 }
 ```
 
-- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6 Astra，走 openai-codex 订阅渠道。
+- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6 Sol，走 openai-codex 订阅渠道。
 - `defaultThinkingLevel`：`max`，全局兜底思考档，只在模型没有专属条目时生效。
-- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。因此按这份配置启动，Astra 用 medium，GLM-5.3、K3 与 kimi-for-coding 用 max，Sol 用 high。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
+- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。新会话默认使用 GPT-6 Sol 的 xhigh；选择 Astra 时用 medium，选择 GLM-5.3、K3 或 kimi-for-coding 时用 max。仍保留 GPT-5.6 Sol 的 high 映射，供手动选择该模型时使用。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
 - `/model` 切换也优先用显式档位、模型专属条目和全局默认；三者均未设置时沿用当前会话档位。续接会话优先恢复会话记录。`/settings` 的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 的手选调整当前档位，Ctrl+S 则保存 `defaultThinkingLevel`。
+
+## 自动压缩
+
+```json
+"compaction": {
+  "enabled": true
+}
+```
+
+显式启用 pi 内建的自动会话压缩（内建默认也为 `true`）。它在上下文空间不足时触发，与 `contextPrune` 对旧工具输出做的逐批剪枝分工不同；剪枝参数见 [04-高阶阶段.md](04-高阶阶段.md)。
 
 ## defaultTools
 
@@ -82,4 +93,4 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 
 ## enabledModels
 
-Ctrl+P 循环切换模型时出现的列表，当前收录 10 个供应商 20 个模型，见 [07-models.md](07-models.md)。
+Ctrl+P 循环切换模型时出现的列表，当前收录 10 个供应商 17 个模型，见 [07-models.md](07-models.md)。
