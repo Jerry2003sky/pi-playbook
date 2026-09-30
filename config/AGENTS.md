@@ -22,39 +22,30 @@ Hidden paths such as `~/.pi` (pi's own configuration) are invisible to the built
 
 # Sub-agent Delegation
 
-If at any point you can parallelize work by delegating tasks to the `pico` sub-agent via the Agent tool (`subagent_type: "pico"`), you should do so using collaboration tools if it could save time or improve quality. It runs a low-cost workhorse model at max thinking effort — capable, fast, and far cheaper than the model running this session.
+You can delegate to the `pico` sub-agent via the Agent tool (`subagent_type: "pico"`). It runs a cheaper model, but every delegation has fixed overhead: cold start, a model re-reading files you may already have, your time writing the spec, and your time checking the result. Expect at least a minute before anything comes back. Whenever you have nothing else to do meanwhile, the user waits through all of it.
 
-Decision rule:
-- Delegate when BOTH hold: (1) you can write a complete spec for it in one prompt, and (2) it either fills your context with raw material you only need a summary of, or it is independent of your next steps and can run in parallel with them.
-- Do the work inline when either test fails — and always for single lookups, even ones with bulky answers (a find/grep hit list, one file read): a lone lookup is faster done than delegated.
-- The Keep list below overrides this rule when they conflict.
-- Judge both tests at the whole-request level, never the current step — any real task is a chain of single calls, and the step level is the wrong granularity.
+Default: do the work yourself. Delegate only when the payoff clearly beats that overhead.
 
-Delegate proactively:
-- Multi-round searches and codebase recon ("what calls Y", "map the auth flow") — single lookups stay inline per the rule above.
-- Packaged step-runs: a contiguous chain of calls serving one sub-question (search → read → probe → summarize) is ONE delegable errand — delegate it whole instead of stepping through it inline.
-- Implementation from a clear spec: new functions/modules, single-file features, bug fixes with known repro and expected behavior.
-- Mechanical edits and refactors within a defined boundary: renames, format transforms, repetitive fixes, one-file refactors.
-- Test authoring for existing code.
-- Diff/code review passes: correctness, edge cases, style — a second pair of eyes before you summarize.
-- Commands with bulky output you only need summarized: tests, builds, git log, lint.
-- Web lookups, page fetches, and multi-source research with synthesis.
+Delegate when ALL hold:
+1. The slice is substantial — roughly 10+ tool calls, or raw output far larger than the summary you need.
+2. You can write a complete spec for it in one prompt.
+3. You have other useful work to do while it runs, or its raw output would flood your context.
 
-Keep in the main session:
-- Design/architecture decisions and ambiguous, cross-cutting changes.
-- Tasks hinging on unwritten preferences or decisions still being negotiated — context you CAN write into a self-contained prompt is delegable.
+Do it inline:
+- Anything you expect to finish in a handful of tool calls, including short multi-step chains (search → read → edit).
+- Single lookups, single file reads, one-off commands, small edits and bug fixes.
+- Design/architecture decisions, ambiguous or cross-cutting changes, unwritten preferences.
 - Destructive or irreversible operations.
-- Work under the excluded cloud-storage paths — the sub-agent does not see that rule.
+
+Good fits: repo-wide recon ("map every caller of X"), independent implementation slices of a larger change, test authoring for a module, long test/build runs where you only need pass/fail plus failures, multi-source web research.
 
 Prompt contract: the sub-agent sees ONLY your prompt — no history, no AGENTS.md. Write delegations self-contained: goal, exact file paths, expected behavior, constraints, and a verification step when one exists (e.g. "npm test must pass").
 
-- Report-to-disk: when delegating inventory/recon tasks whose findings you will consume as reference material (not when the report itself is the user's deliverable), assign a slug in the prompt and require a timestamped filename: "Write the full report to ~/.pi/agent/reports/<timestamp>-<slug>.md, where <timestamp> is the output of `date +%Y%m%d-%H%M%S` run by you; return only a 3-5 line summary + the final file path + a one-line section list." Parallel agents must get distinct slugs.
+Report-to-disk: when delegating recon whose findings you will consume as reference material (not when the report itself is the user's deliverable), give pico a unique slug: "Report slug: <slug>." Parallel agents get distinct slugs.
 
-Orchestration:
-- Decompose first: on any multi-part task, split the work into independent slices up front and spawn background pico agents for the delegable slices BEFORE starting your own slice. Do not delegate at the end of work.
-- Everything else runs in background, never in foreground.
-- Batch parallel spawns into a single turn so completion notifications arrive grouped. Keep slices file-disjoint — overlapping edits collide.
-- Never idle-wait: while background agents run, keep working on your own slice; consolidate when completion notifications arrive.
-- Typical fan-outs: task-start recon (2-3 parallel searches), separable implementation slices, tests or docs while you finish the core, a review pass while you draft the summary.
-- Steer mid-run if one drifts; skim touched files before reporting edit results to the user.
+When you do delegate:
+- Decide early. If a slice qualifies, spawn it at the start instead of after doing half of it inline.
+- Background when you have your own work to continue; foreground when you would only wait for the result.
+- Batch parallel spawns into one turn; keep slices file-disjoint — overlapping edits collide.
+- Skim touched files before reporting edit results to the user.
 - If pico stops and reports missing information or out-of-scope work, resolve it in the main session instead of re-delegating the same task.
