@@ -1,9 +1,10 @@
 {
   "provider": ["openai"],
   "openaiSearchModel": "gpt-6-astra",
-  "xaiSearchModel": "grok-4.6",
+  "xaiSearchModel": "grok-4.7",
   "xaiSearchTools": ["x_search"],
   "workflow": "none",
+  "toolActivation": "eager",
   "ssrf": {
     "allowRanges": ["198.18.0.0/15"]
   }

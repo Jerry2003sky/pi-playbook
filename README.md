@@ -8,7 +8,7 @@
 
 | 维度 | 内容 |
 |------|------|
-| **模型策略** | GPT-6 Sol 主力 + 廉价档做杂活，10 个供应商 17 个模型按场景切换 |
+| **模型策略** | GPT-6.1 Sol 主力 + 廉价档做杂活，10 个供应商 17 个模型按场景切换 |
 | **基础阶段**（2 个） | 联网搜索、会话命名——补 pi 本体最底层的能力缺口 |
 | **进阶阶段**（4 个） | 搜索增强、上下文观察、缓存监控、结构化提问——效率与交互 |
 | **高阶阶段**（2 个） | 子代理、上下文剪枝——架构级改造 |
@@ -25,7 +25,7 @@
 - **基础阶段**：补底层能力缺口（联网、命名）。
 - **进阶阶段**：治效率与交互问题（搜索、观测、提问），插件相互独立。
 - **高阶阶段**：架构级改造（子代理、剪枝），权衡最深。
-- **界面与观测**：单独一类，横跨所有阶段，不改变行为，只管观感和感知。
+- **界面与观测**：单独一类，横跨所有阶段，改善终端显示、输入框样式与状态观测。
 
 划分逻辑的完整阐述见 [docs/01-理念与路线.md](docs/01-理念与路线.md)。
 
@@ -60,6 +60,7 @@ pi-playbook/
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
 │   ├── pi-claude-code-tui.json  #   ~/.pi/agent/pi-claude-code-tui.json（界面选择状态，见 05）
 │   ├── agents/pico.md           #   ~/.pi/agent/agents/pico.md
+│   ├── themes/dark-classic.json #   ~/.pi/agent/themes/dark-classic.json（自定义主题）
 │   └── AGENTS.md                #   ~/.pi/agent/AGENTS.md
 ├── LICENSE
 └── .gitignore
@@ -69,7 +70,16 @@ pi-playbook/
 
 文档分两条线。主线是阶段文档（02–05），每个插件一节：它做什么、我为什么装、参数手册、我的配置。支线（06–09）讲 pi 本体配置和我自己写的东西。
 
-`config/` 目录放的是本机配置的脱敏副本，文档中的“我的配置”块与对应文件保持一致。个人家目录统一写成 `~`；若配置需要引用凭证，使用环境变量名占位，并按自己的环境设置。安装示例标注本机已安装版本；`settings.json` 的包来源保持本机的无版本写法。参数手册解释常用配置及相关行为，未设置的参数采用插件默认值。
+`config/` 目录放的是本机配置的脱敏副本，文档中的“我的配置”块与对应文件保持一致。本次核对基于 pi **0.99.1**。个人家目录统一写成 `~`；若配置需要引用凭证，使用环境变量名占位，并按自己的环境设置。安装示例标注本机已安装版本；`settings.json` 的包来源保持本机的无版本写法。参数手册解释常用配置及相关行为，未设置的参数采用插件默认值。
+
+当前 `settings.json` 选择自定义主题 `dark-classic`。应用这份配置前，在仓库根目录安装主题：
+
+```bash
+mkdir -p ~/.pi/agent/themes
+cp config/themes/dark-classic.json ~/.pi/agent/themes/
+```
+
+主题文件见 [`config/themes/dark-classic.json`](config/themes/dark-classic.json)，本地定制启动页头的安装步骤见 [`plugins/pi-claude-code-tui/INSTALL.md`](plugins/pi-claude-code-tui/INSTALL.md)。
 
 `~/.agents/skills/` 下的外部技能由本机独立管理；本仓库记录 `settings.json` 中的技能发现设置。`auth.json`、模型缓存和会话等运行数据保留在本机。
 

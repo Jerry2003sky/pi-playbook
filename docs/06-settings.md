@@ -12,12 +12,12 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 
 | 配置 | 值 | 含义 |
 |------|----|------|
-| `theme` | `"dark"` | 深色主题 |
+| `theme` | `"dark-classic"` | 本地自定义主题（pi 内置主题为 `system`、`dark`、`light`）；副本见 [`config/themes/dark-classic.json`](../config/themes/dark-classic.json)，使用时复制到 `~/.pi/agent/themes/`，来源说明见 [05-界面与观测.md](05-界面与观测.md) |
 | `tuiMode` | `"fullscreen"` | 实验性全屏 TUI（常规为 `"regular"`），输出区占满终端 |
-| `fullscreenScrollbar` | `"auto"` | 滚动时或指针悬停在该列轨道上时临时显示滚动条，仅在 fullscreen 模式生效 |
-| `fullscreenCopyOnSelect` | `false` | 全屏模式下的选中即复制开关 |
+| `fullscreenScrollbar` | `"auto"` | 全屏转录区滚动条：滚动或指针悬停时临时显示（`"always"` 常驻、`"hidden"` 关闭） |
+| `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入编辑器水平留白（0-3），1 档视觉上更舒服 |
-| `lastChangelogVersion` | `"0.87.1"` | pi 内部记录已读 changelog 版本，别手动改 |
+| `lastChangelogVersion` | `"0.99.1"` | pi 内部记录已读 changelog 版本，别手动改 |
 
 ## 技能发现
 
@@ -28,28 +28,27 @@ pi 内建设置项的权威文档是 [官方 settings.md](https://github.com/ear
 
 pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发现技能；`skills` 数组是这层发现的增删覆盖。前缀有三种：`!<glob>` 通配排除、`+<path>` 精确强制包含、`-<path>` 精确强制排除。相对路径按各自的发现根目录解析——`~/.pi/agent/skills/` 的根是 `~/.pi/agent`，`~/.agents/skills/` 的根是 `~/.agents`。这里只有一条 `-`，命中的是 `~/.agents/skills/guizang-ppt-skill/SKILL.md`，只把它排除出发现范围，其余技能照常加载。
 
-`enableSkillCommands` 控制技能是否注册成 `/skill:<name>` 命令，默认 `true`，这份配置关掉；技能本身仍会出现在技能列表里按需加载，两个开关互不影响。
+`enableSkillCommands` 控制技能命令是否出现在交互式命令发现（`/skill:<name>` 的补全与列表）里，默认 `true`，这份配置关掉；手动输入的 `/skill:<name>` 仍有效，技能本身也照常加入技能列表按需加载。
 
 ## 默认模型
 
 ```json
 "defaultProvider": "openai-codex",
-"defaultModel": "gpt-6-sol",
+"defaultModel": "gpt-6.1-sol",
 "defaultThinkingLevel": "max",
 "modelThinkingLevels": {
-  "openai-codex/gpt-6-astra": "medium",
+  "openai-codex/gpt-6-astra": "high",
   "akile-gpt/gpt-6-astra": "medium",
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
   "kimi-coding/kimi-for-coding": "max",
-  "openai-codex/gpt-5.6-sol": "high",
-  "openai-codex/gpt-6-sol": "xhigh"
+  "openai-codex/gpt-6.1-sol": "high"
 }
 ```
 
-- `defaultProvider` + `defaultModel`：每次启动 pi 时默认用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6 Sol，走 openai-codex 订阅渠道。
+- `defaultProvider` + `defaultModel`：新会话默认使用的模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6.1 Sol，走 openai-codex 订阅渠道（0.99.0 起界面里显示为 “OpenAI Codex (legacy)”）。它也在 `enabledModels` 清单内，启动选择优先采用这个默认值。
 - `defaultThinkingLevel`：`max`，全局兜底思考档，只在模型没有专属条目时生效。
-- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。新会话默认使用 GPT-6 Sol 的 xhigh；选择 Astra 时用 medium，选择 GLM-5.3、K3 或 kimi-for-coding 时用 max。仍保留 GPT-5.6 Sol 的 high 映射，供手动选择该模型时使用。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
+- `modelThinkingLevels`：按 `provider/modelId` 配置模型专属默认档位。新会话启动时，显式指定的档位优先，其后依次是**模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 与 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3 和 kimi-for-coding 用 max。最终档位还会按模型支持范围调整，映射规则见 [07-models.md](07-models.md)。
 - `/model` 切换也优先用显式档位、模型专属条目和全局默认；三者均未设置时沿用当前会话档位。续接会话优先恢复会话记录。`/settings` 的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 的手选调整当前档位，Ctrl+S 则保存 `defaultThinkingLevel`。
 
 ## 自动压缩
@@ -60,7 +59,7 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 }
 ```
 
-显式启用 pi 内建的自动会话压缩（内建默认也为 `true`）。它在上下文空间不足时触发，与 `contextPrune` 对旧工具输出做的逐批剪枝分工不同；剪枝参数见 [04-高阶阶段.md](04-高阶阶段.md)。
+显式启用 pi 内建的自动会话压缩（内建默认也为 `true`）。它在上下文空间不足时触发，与 `contextPrune` 对旧工具输出做的逐批剪枝分工不同；剪枝参数见 [04-高阶阶段.md](04-高阶阶段.md)。pi 还提供 `compaction.reserveTokens`、`compaction.keepRecentTokens` 与按模型的 `compaction.modelOverrides`，这份配置只用 `enabled`。
 
 ## defaultTools
 
@@ -68,7 +67,7 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 "defaultTools": ["find", "grep", "bash", "read", "edit", "write", "ls"]
 ```
 
-默认激活的内置工具白名单，只管 pi 自己的内置工具。`find`/`grep` 也在列——pi-fff 的 `override` 模式把这两个内置工具的实现换成 FFF，工具名与白名单位置照旧，全局 AGENTS.md 的搜索纪律据此写，见 [09-agents-md.md](09-agents-md.md)。
+启动时激活的工具集合。纯名称列表替换 pi 的内建默认集（`read`、`bash`、`edit`、`write`），这份配置把 `find`、`grep`、`ls` 一并打开；`+name` 与 `-name` 条目在继承的选择上增减，`codemode`、`tool_search` 这类内建扩展工具也可以列名启用。`find`/`grep` 在列的原因：pi-fff 的 `override` 模式把这两个内置工具的实现换成 FFF，工具名与列表位置照旧，全局 AGENTS.md 的搜索纪律据此写，见 [09-agents-md.md](09-agents-md.md)。
 
 ## packages
 
@@ -93,4 +92,4 @@ pi 从 `~/.pi/agent/skills/`、`~/.agents/skills/`、包和项目目录自动发
 
 ## enabledModels
 
-Ctrl+P 循环切换模型时出现的列表，当前收录 10 个供应商 17 个模型，见 [07-models.md](07-models.md)。
+Ctrl+P 循环切换的模型清单，也是启动选择的范围：新会话启动时，默认模型在清单内就用它，否则取清单第一个；`--model` 与续接会话不走这条规则。当前收录 10 个供应商 17 个模型，见 [07-models.md](07-models.md)。`/scoped-models` 可直接编辑并保存这份清单；`/model` 里 Ctrl+S 保存的清单外模型会被追加一条 `provider/id`。
