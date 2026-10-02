@@ -13,11 +13,11 @@
 | 配置 | 值 | 含义 |
 |------|----|------|
 | `theme` | `"dark-classic"` | 本地自定义主题（pi 内置主题为 `system`、`dark`、`light`）；副本见 [`config/themes/dark-classic.json`](../config/themes/dark-classic.json)，使用时复制到 `~/.pi/agent/themes/`，来源说明见 [05-界面与观测.md](05-界面与观测.md) |
-| `tuiMode` | `"fullscreen"` | 全屏 TUI，输出区占满终端，用 pi 自己的滚动和选择复制；pi 1.0.0 起这就是默认值。设为 `"regular"`（或启动时 `--tui-mode regular`）则回到普通终端模式，保留终端自带的滚动历史 |
+| `tuiMode` | `"fullscreen"` | 实验性全屏 TUI（常规为 `"regular"`），输出区占满终端 |
 | `fullscreenScrollbar` | `"auto"` | 全屏转录区滚动条：滚动或指针悬停时临时显示（`"always"` 常驻、`"hidden"` 关闭） |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入框水平留白（0–3），1 看起来最舒服 |
-| `lastChangelogVersion` | `"1.0.0"` | pi 自动记录的已读 changelog 版本，不用手动改 |
+| `lastChangelogVersion` | `"0.99.1"` | pi 自动记录的已读 changelog 版本，不用手动改 |
 
 ## 技能发现
 
@@ -43,19 +43,18 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 "defaultModel": "gpt-6.1-sol",
 "defaultThinkingLevel": "max",
 "modelThinkingLevels": {
+  "openai-codex/gpt-6-astra": "high",
   "akile-gpt/gpt-6-astra": "medium",
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
   "kimi-coding/kimi-for-coding": "max",
-  "openai-codex/gpt-6.1-sol": "high",
-  "openai-codex/gpt-6-astra": "high",
-  "openai-codex/gpt-6-luna": "max"
+  "openai-codex/gpt-6.1-sol": "high"
 }
 ```
 
 - `defaultProvider` + `defaultModel`：新会话的默认模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6.1 Sol，走 openai-codex 订阅渠道（0.99.0 起界面显示为 “OpenAI Codex (legacy)”）。它也在 `enabledModels` 清单里，所以启动时会直接选中它。
 - `defaultThinkingLevel`：`max`，全局兜底档位，只对没有专属条目的模型生效。
-- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 和 GPT-6 Luna 用 max。最终档位还会按模型实际支持的范围调整，映射规则见 [07-models.md](07-models.md)。
+- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。最终档位还会按模型实际支持的范围调整，映射规则见 [07-models.md](07-models.md)。
 - `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 Ctrl+S 保存为 `defaultThinkingLevel`。
 
 ## 自动压缩
@@ -71,18 +70,12 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 ## defaultTools
 
 ```json
-"defaultTools": ["find", "grep", "read", "write", "edit", "bash", "ls", "codemode", "tool_search"]
+"defaultTools": ["find", "grep", "bash", "read", "edit", "write", "ls"]
 ```
 
 启动时激活的工具。只写工具名时，这份列表整体替换 pi 的内建默认集（`read`、`bash`、`edit`、`write`）；写成 `+name` / `-name` 则在默认集上增减。`codemode`、`tool_search` 这类内建扩展工具也可以按名字启用。
 
-这里在内建默认集之外打开了五个：
-
-- `find`、`grep`、`ls`：`find`/`grep` 必须在列。pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [09-agents-md.md](09-agents-md.md)。
-- `codemode`：模型可以写一段 JavaScript 脚本，在沙箱里批量、并行地调用 pi 的其他工具，只把脚本的输出交回给模型。适合“调很多次工具再筛选结果”的场景，中间的大段输出不进上下文。
-- `tool_search`：搜索当前没有声明给模型的工具（如 MCP 服务器以 `codemode` / `deferred` 方式暴露的工具），把命中的工具加载到下一次请求里。工具很多时不必全部常驻上下文。
-
-这两个由 pi 1.0 的内建扩展注册，默认不激活：写进 `defaultTools` 会常驻启用；没写的话，只有配置了 MCP 服务器且需要时才会被 MCP 扩展自动打开。改完 `defaultTools` 后运行 `/reload`，新加入的工具会直接启用，不用重启。
+这里额外打开了 `find`、`grep`、`ls`。`find`/`grep` 必须在列：pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [09-agents-md.md](09-agents-md.md)。
 
 ## packages
 
@@ -107,4 +100,4 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 ## enabledModels
 
-Ctrl+P 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 8 个供应商的 12 个模型，详见 [07-models.md](07-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里选中某个模型按 Ctrl+S，会把它存为默认模型（写 `defaultProvider` / `defaultModel`）；清单非空且不含该模型时，还会把它的 `provider/id` 追加进清单，保证下次启动能选中它。
+Ctrl+P 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 10 个供应商的 17 个模型，详见 [07-models.md](07-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里对清单外的模型按 Ctrl+S，会把它的 `provider/id` 追加进来。

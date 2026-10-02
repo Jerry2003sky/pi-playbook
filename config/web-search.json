@@ -4,7 +4,7 @@
   "xaiSearchModel": "grok-4.7",
   "xaiSearchTools": ["x_search"],
   "workflow": "none",
-  "toolActivation": "auto",
+  "toolActivation": "eager",
   "ssrf": {
     "allowRanges": ["198.18.0.0/15"]
   }

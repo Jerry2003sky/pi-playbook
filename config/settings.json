@@ -1,28 +1,25 @@
 {
-  "lastChangelogVersion": "1.0.0",
+  "lastChangelogVersion": "0.99.1",
   "theme": "dark-classic",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "max",
   "modelThinkingLevels": {
+    "openai-codex/gpt-6-astra": "high",
     "akile-gpt/gpt-6-astra": "medium",
     "zai-coding-cn/glm-5.3": "max",
     "kimi-coding/k3": "max",
     "kimi-coding/kimi-for-coding": "max",
-    "openai-codex/gpt-6.1-sol": "high",
-    "openai-codex/gpt-6-astra": "high",
-    "openai-codex/gpt-6-luna": "max"
+    "openai-codex/gpt-6.1-sol": "high"
   },
   "defaultTools": [
     "find",
     "grep",
-    "read",
-    "write",
-    "edit",
     "bash",
-    "ls",
-    "codemode",
-    "tool_search"
+    "read",
+    "edit",
+    "write",
+    "ls"
   ],
   "packages": [
     "npm:pi-web-access",
@@ -39,18 +36,23 @@
   "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto",
   "enabledModels": [
-    "openai-codex/gpt-6-astra",
-    "openai-codex/gpt-6.1-sol",
+    "deepseek/deepseek-v4-pro",
     "kimi-coding/k3",
     "kimi-coding/k3-256k",
-    "kimi-coding/kimi-for-coding",
-    "xai/grok-4.7",
-    "deepseek/deepseek-flash",
-    "deepseek/deepseek-v4-pro",
+    "kimi-coding/kimi-for-coding-highspeed",
+    "fireworks/accounts/fireworks/routers/kimi-k3-fast",
     "zai-coding-cn/glm-5.3",
-    "akile-gpt/gpt-6-astra",
+    "zai-coding-cn/glm-5.3-flash",
+    "zenmux/claude-fable-5-1:google-vertex",
     "akile-claude/claude-fable-5-1",
-    "zenmux/claude-fable-5-1:google-vertex"
+    "openai-codex/gpt-6-astra",
+    "akile-gpt/gpt-6-astra",
+    "cerebras/qwen-3.8-27b",
+    "kimi-coding/kimi-for-coding",
+    "deepseek/deepseek-flash",
+    "xai/grok-4.7",
+    "openai-codex/gpt-6-luna",
+    "openai-codex/gpt-6.1-sol"
   ],
   "tokenSpeed": {
     "display": "tps",
@@ -81,6 +83,7 @@
     "summarizerMaxTimeoutMs": 100000,
     "protectedTools": [
       "ask_user_question",
+      "planmode",
       "Agent",
       "get_subagent_result",
       "web_search",

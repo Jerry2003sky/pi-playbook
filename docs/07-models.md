@@ -159,29 +159,34 @@
 
 ```jsonc
 "enabledModels": [
-  "openai-codex/gpt-6-astra",         // 高端备选：GPT-6 Astra，启动档位 high
-  "openai-codex/gpt-6.1-sol",         // 当前默认：GPT-6.1 Sol，启动档位 high
+  "deepseek/deepseek-v4-pro",
   "kimi-coding/k3",                   // Moonshot 编程订阅，百万上下文
   "kimi-coding/k3-256k",              // 256K 长上下文版
-  "kimi-coding/kimi-for-coding",      // models.json 覆盖：K2.8 Preview，启动档位 max
-  "xai/grok-4.7",
-  "deepseek/deepseek-flash",          // 廉价档：pico、会话命名与剪枝摘要
-  "deepseek/deepseek-v4-pro",
+  "kimi-coding/kimi-for-coding-highspeed",
+  "fireworks/accounts/fireworks/routers/kimi-k3-fast",
   "zai-coding-cn/glm-5.3",            // GLM 备选，启动档位 max
-  "akile-gpt/gpt-6-astra",            // Astra 的备用渠道，启动档位 medium
+  "zai-coding-cn/glm-5.3-flash",      // 廉价档备选
+  "zenmux/claude-fable-5-1:google-vertex",  // 高端：Claude Fable 5.1
   "akile-claude/claude-fable-5-1",    // 高端：Fable 5.1 的低价渠道
-  "zenmux/claude-fable-5-1:google-vertex"  // 高端：Claude Fable 5.1
+  "openai-codex/gpt-6-astra",         // 高端备选：GPT-6 Astra，启动档位 high
+  "akile-gpt/gpt-6-astra",            // 同款备用渠道，启动档位 medium
+  "cerebras/qwen-3.8-27b",
+  "kimi-coding/kimi-for-coding",      // models.json 覆盖：K2.8 Preview，启动档位 max
+  "deepseek/deepseek-flash",          // 廉价档：pico、会话命名与剪枝摘要
+  "xai/grok-4.7",
+  "openai-codex/gpt-6-luna",          // 廉价档：Luna，同时是会话命名的失败回退
+  "openai-codex/gpt-6.1-sol"          // 当前默认：GPT-6.1 Sol，启动档位 high
 ]
 ```
 
 Ctrl+P 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
-这份清单包含 8 个供应商的 12 个模型，按用途分：
+这份清单包含 10 个供应商的 17 个模型，按用途分：
 
 - **主力**：openai-codex/gpt-6.1-sol（当前默认；`modelThinkingLevels` 定 high），openai-codex/gpt-6-astra 与 akile-gpt 渠道同款备用（启动档位分别为 high 与 medium）
 - **长上下文备选**：k3 / k3-256k / kimi-for-coding（Moonshot 编程订阅；kimi-for-coding 在本地配置为百万上下文）
-- **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）
-- **其他备选**：zai-coding-cn/glm-5.3
+- **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）、openai-codex/gpt-6-luna（会话命名的失败回退，配在 `pi-autoname.json` 的 `fallbackModels`）
+- **其他备选**：cerebras/qwen-3.8-27b、zai-coding-cn/glm-5.3-flash
 - **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、GPT-6 Astra（akile-gpt 渠道配置为百万级上下文）、grok-4.7、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
 
 ## 自定义供应商
