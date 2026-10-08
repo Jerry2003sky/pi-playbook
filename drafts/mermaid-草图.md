@@ -56,27 +56,23 @@ flowchart LR
 ## 3. 06 pico：一次委托的流程
 
 ```mermaid
-sequenceDiagram
-    participant M as 主模型
-    participant P as pico · deepseek-flash
-    participant D as 本地磁盘
+flowchart TB
+    A(["主模型拿到任务"])
+    A -- 几次工具调用就能做完 --> Self("主模型自己做")
+    A -- 量大、范围明确 --> T("写自包含任务书<br/><small>可附 slug</small>")
+    T --> P("pico 执行<br/><small>看不到主会话历史，只按任务书干活</small>")
+    P -- 结果较短 --> R1("直接回结论<br/><small>file:line · 假设 · 未完成项</small>")
+    P -- 给了 slug，或超过约 50 行 --> D[("报告写盘<br/><small>reports/时间戳-slug.md</small>")]
+    D --> R2("只回 3–5 行结论<br/><small>+ 文件路径 + 章节列表</small>")
+    R1 --> M(["主模型上下文只进摘要"])
+    R2 --> M
 
-    Note over M: 按 AGENTS.md 判断：<br/>几次工具调用能做完的，自己做
-    M->>P: 自包含任务书（可附 slug）
-
-    rect rgba(34, 197, 94, 0.12)
-        Note over P: 看不到主会话历史，只按任务书干活
-        P->>P: 调研 · 修改 · 跑测试
-    end
-
-    alt 给了 slug，或结果超过约 50 行
-        P->>D: 写报告 reports/时间戳-slug.md
-        P-->>M: 3–5 行结论 + 路径 + 章节列表
-    else 结果较短
-        P-->>M: 结论 + file:line + 假设 + 未完成项
-    end
-
-    Note over M,D: 大段内容留在磁盘，主会话只进摘要
+    classDef main fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
+    classDef cheapN fill:#dcfce7,stroke:#22c55e,stroke-width:1.5px,color:#14532d
+    classDef store fill:#f3f4f6,stroke:#9ca3af,color:#374151
+    class A,Self,T,M main
+    class P,R1,R2 cheapN
+    class D store
 ```
 
 ## 4. 04 pi-condense：剪枝怎么处理工具输出
