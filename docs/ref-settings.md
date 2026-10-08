@@ -1,3 +1,5 @@
+[pi-playbook](../README.md) › [参考](../README.md#参考) › **settings.json**
+
 # settings.json 详解
 
 `settings.json` 是 pi 的全局设置，完整文件见 [`config/settings.json`](../config/settings.json)。
@@ -53,10 +55,10 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 }
 ```
 
-- 本机没有设置 `defaultProvider` / `defaultModel`。未用 `--model` 指定模型、也没有续接会话时，从 `enabledModels` 解析后的可用清单选第一个；当前是 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 Ctrl+S 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
+- 本机没有设置 `defaultProvider` / `defaultModel`。未用 `--model` 指定模型、也没有续接会话时，从 `enabledModels` 解析后的可用清单选第一个；当前是 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
 - `defaultThinkingLevel`：`high`，全局兜底档位，只对没有专属条目的模型生效。
-- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [07-models.md](07-models.md)。
-- `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 Ctrl+S 保存为 `defaultThinkingLevel`。
+- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [ref-models.md](ref-models.md)。
+- `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 保存为 `defaultThinkingLevel`。
 
 ## 自动压缩
 
@@ -80,7 +82,7 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 - `codemode` 在 QuickJS 沙箱里批量调用工具、过滤输出，也能调用分类和图像模型。脚本不能直接访问文件系统或网络，但可通过工具和模型 API 访问外部服务；这不限制被调用工具本身的权限。
 - `tool_search` 搜索尚未向模型声明的工具，把匹配结果加入下一次调用的工具列表。
-- `find`/`grep` 必须在列：pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [09-agents-md.md](09-agents-md.md)。
+- `find`/`grep` 必须在列：pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [07-全局指令.md](07-全局指令.md)。
 
 ## packages
 
@@ -105,4 +107,8 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 ## enabledModels
 
-Ctrl+P 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 8 个供应商的 12 个模型，第一项是 `openai-codex/gpt-6-astra`，详见 [07-models.md](07-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里对清单外的模型按 Ctrl+S，会把它的 `provider/id` 追加进来。
+<kbd>Ctrl</kbd>+<kbd>P</kbd> 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 8 个供应商的 12 个模型，第一项是 `openai-codex/gpt-6-astra`，详见 [ref-models.md](ref-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里对清单外的模型按 <kbd>Ctrl</kbd>+<kbd>S</kbd>，会把它的 `provider/id` 追加进来。
+
+---
+
+[返回目录](../README.md#参考)
