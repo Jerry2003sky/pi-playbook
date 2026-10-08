@@ -178,7 +178,7 @@
 
 <kbd>Ctrl</kbd>+<kbd>P</kbd> 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
-这份清单包含 8 个供应商的 12 个模型。本机没有指定默认模型，所以普通新会话从第一项 GPT-6 Astra 起步；`--model` 和续接会话例外。按用途分：
+这份清单包含 8 个供应商的 12 个模型。本机没有指定默认模型，所以普通新会话从第一项 GPT-6 Astra 起步。按用途分：
 
 - **主力**：openai-codex/gpt-6-astra 和 openai-codex/gpt-6.1-sol（`modelThinkingLevels` 均定 high），akile-gpt 渠道的 Astra 做备用（启动档位 medium）
 - **长上下文备选**：k3 / k3-256k / kimi-for-coding（Moonshot 编程订阅；kimi-for-coding 在本地配置为百万上下文）
