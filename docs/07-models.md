@@ -137,7 +137,7 @@
 
   `modelOverrides` 里的映射和内置条目逐键合并，没写的键保留内置映射。具体到这份文件：两条 Fable 5.1 把 `off`/`minimal` 设为 `null`，显式映射 `xhigh`/`max`，`low`–`high` 不写、走 API 默认；GPT-6 Astra 把 `off`/`minimal` 设为 `null`，其余五档全部显式映射；kimi-for-coding 的覆盖关掉 `minimal`/`medium`/`xhigh`，保留 `max`，`off`/`low`/`high` 沿用内置映射（`off` 即关闭思考，`low`/`high` 原样下发）。
 - **`input` / `contextWindow` / `maxTokens`**：输入模态、上下文窗口、输出上限。
-- **`cost`**：每百万 token 的美元价格，用于成本估算。同样是 Fable 5.1，akile 渠道比 zenmux 便宜一个数量级（输入 $1.78 对 $10）；两个渠道都留着，按需切换。kimi-for-coding 的覆盖没写 `cost`，沿用内置定价。
+- **`cost`**：每百万 token 的美元价格，用于成本估算。同样是 Fable 5.1，akile 渠道的配置价格更低（输入 $1.78 对 $10，约为 zenmux 的 18%）；两个渠道都留着，按需切换。kimi-for-coding 的覆盖没写 `cost`，沿用内置定价。
 - **`compat`**：兼容开关，按渠道的实际能力打开。两条 Anthropic 侧的 Fable 5.1 开 `forceAdaptiveThinking` / `supportsStrictTools`，akile-gpt 的 GPT-6 Astra 开 `supportsStrictMode` / `supportsOpenAIGrammarTools`。DeepSeek 这类国产模型的兼容开关（`thinkingFormat: "deepseek"`、`maxTokensField: "max_tokens"` 等）上游目录已经内置，这里不必再写。
 
 `deepseek/deepseek-flash` 直接用 pi 的供应商模型目录，之前放在这里的 DeepSeek 临时定义已经删掉。迁移到新机器时，先运行 `pi update --models` 刷新目录，完成对应供应商的 `/login`，再到 `/model` 里确认 `deepseek-flash` 和 `kimi-for-coding` 都能用——目录里没有的 id，`modelOverrides` 会直接忽略，覆盖也就不生效。
@@ -149,7 +149,7 @@
 
 **换模型时要连带检查的地方。** `models.json` 只管接入。其余引用散在各处：
 
-- `settings.json` 的 `defaultProvider` / `defaultModel` 和 `modelThinkingLevels`：默认模型和档位（见 [06-settings.md](06-settings.md)）；
+- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机未设置，见 [06-settings.md](06-settings.md)）；
 - `settings.json` 的 `enabledModels`：Ctrl+P 清单；
 - `pico.md` 的 `model`：子代理；
 - `pi-autoname.json` 的 `model` / `fallbackModels`：会话命名；
@@ -159,35 +159,31 @@
 
 ```jsonc
 "enabledModels": [
-  "deepseek/deepseek-v4-pro",
-  "kimi-coding/k3",                   // Moonshot 编程订阅，百万上下文
-  "kimi-coding/k3-256k",              // 256K 长上下文版
-  "kimi-coding/kimi-for-coding-highspeed",
-  "fireworks/accounts/fireworks/routers/kimi-k3-fast",
-  "zai-coding-cn/glm-5.3",            // GLM 备选，启动档位 max
-  "zai-coding-cn/glm-5.3-flash",      // 廉价档备选
-  "zenmux/claude-fable-5-1:google-vertex",  // 高端：Claude Fable 5.1
-  "akile-claude/claude-fable-5-1",    // 高端：Fable 5.1 的低价渠道
-  "openai-codex/gpt-6-astra",         // 高端备选：GPT-6 Astra，启动档位 high
-  "akile-gpt/gpt-6-astra",            // 同款备用渠道，启动档位 medium
-  "cerebras/qwen-3.8-27b",
-  "kimi-coding/kimi-for-coding",      // models.json 覆盖：K2.8 Preview，启动档位 max
-  "deepseek/deepseek-flash",          // 廉价档：pico、会话命名与剪枝摘要
+  "openai-codex/gpt-6-astra",         // 当前新会话首选，启动档位 high
+  "openai-codex/gpt-6.1-sol",         // 主力备选，启动档位 high
+  "kimi-coding/k3",                  // Moonshot 编程订阅，百万上下文
+  "kimi-coding/k3-256k",             // 256K 长上下文版
+  "kimi-coding/kimi-for-coding",     // models.json 覆盖：K2.8 Preview，启动档位 max
   "xai/grok-4.7",
-  "openai-codex/gpt-6-luna",          // 廉价档：Luna，同时是会话命名的失败回退
-  "openai-codex/gpt-6.1-sol"          // 当前默认：GPT-6.1 Sol，启动档位 high
+  "deepseek/deepseek-flash",         // 廉价档：pico、会话命名与剪枝摘要
+  "deepseek/deepseek-v4-pro",
+  "zai-coding-cn/glm-5.3",           // GLM 备选，启动档位 max
+  "akile-gpt/gpt-6-astra",           // 同款备用渠道，启动档位 medium
+  "akile-claude/claude-fable-5-1",   // Fable 5.1 的低价渠道
+  "zenmux/claude-fable-5-1:google-vertex"  // Fable 5.1 备用渠道
 ]
 ```
 
 Ctrl+P 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
-这份清单包含 10 个供应商的 17 个模型，按用途分：
+这份清单包含 8 个供应商的 12 个模型。本机没有指定默认模型，所以普通新会话从第一项 GPT-6 Astra 起步；`--model` 和续接会话例外。按用途分：
 
-- **主力**：openai-codex/gpt-6.1-sol（当前默认；`modelThinkingLevels` 定 high），openai-codex/gpt-6-astra 与 akile-gpt 渠道同款备用（启动档位分别为 high 与 medium）
+- **主力**：openai-codex/gpt-6-astra 和 openai-codex/gpt-6.1-sol（`modelThinkingLevels` 均定 high），akile-gpt 渠道的 Astra 做备用（启动档位 medium）
 - **长上下文备选**：k3 / k3-256k / kimi-for-coding（Moonshot 编程订阅；kimi-for-coding 在本地配置为百万上下文）
-- **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）、openai-codex/gpt-6-luna（会话命名的失败回退，配在 `pi-autoname.json` 的 `fallbackModels`）
-- **其他备选**：cerebras/qwen-3.8-27b、zai-coding-cn/glm-5.3-flash
-- **高端备选**：Claude Fable 5.1（zenmux / akile 双渠道）、GPT-6 Astra（akile-gpt 渠道配置为百万级上下文）、grok-4.7、deepseek-v4-pro——长上下文或难任务时 `/model` 切换
+- **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）
+- **其他备选**：zai-coding-cn/glm-5.3、Claude Fable 5.1（zenmux / akile 双渠道）、grok-4.7、deepseek-v4-pro
+
+`openai-codex/gpt-6-luna` 不在当前 Ctrl+P 清单里，但仍保留在 `pi-autoname.json` 的 `fallbackModels` 和 `modelThinkingLevels` 中。`enabledModels` 限制启动选择和循环切换，不是禁止清单外模型使用的权限列表。
 
 ## 自定义供应商
 

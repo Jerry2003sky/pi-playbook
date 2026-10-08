@@ -13,11 +13,13 @@
 | 配置 | 值 | 含义 |
 |------|----|------|
 | `theme` | `"dark-classic"` | 本地自定义主题（pi 内置主题为 `system`、`dark`、`light`）；副本见 [`config/themes/dark-classic.json`](../config/themes/dark-classic.json)，使用时复制到 `~/.pi/agent/themes/`，来源说明见 [05-界面与观测.md](05-界面与观测.md) |
-| `tuiMode` | `"fullscreen"` | 实验性全屏 TUI（常规为 `"regular"`），输出区占满终端 |
+| `tuiMode` | `"fullscreen"` | pi 1.1.0 默认的全屏 TUI，输出区占满终端；`"regular"` 为普通滚动模式 |
 | `fullscreenScrollbar` | `"auto"` | 全屏转录区滚动条：滚动或指针悬停时临时显示（`"always"` 常驻、`"hidden"` 关闭） |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入框水平留白（0–3），1 看起来最舒服 |
-| `lastChangelogVersion` | `"0.99.1"` | pi 自动记录的已读 changelog 版本，不用手动改 |
+| `lastChangelogVersion` | `"1.1.0"` | pi 自动记录的已读 changelog 版本，不用手动改 |
+
+本机还有自动生成的设备标识 `deviceId`；它不影响这份配置的使用，脱敏副本不收录。
 
 ## 技能发现
 
@@ -39,22 +41,21 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 ## 默认模型
 
 ```json
-"defaultProvider": "openai-codex",
-"defaultModel": "gpt-6.1-sol",
-"defaultThinkingLevel": "max",
+"defaultThinkingLevel": "high",
 "modelThinkingLevels": {
-  "openai-codex/gpt-6-astra": "high",
   "akile-gpt/gpt-6-astra": "medium",
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
   "kimi-coding/kimi-for-coding": "max",
-  "openai-codex/gpt-6.1-sol": "high"
+  "openai-codex/gpt-6.1-sol": "high",
+  "openai-codex/gpt-6-astra": "high",
+  "openai-codex/gpt-6-luna": "max"
 }
 ```
 
-- `defaultProvider` + `defaultModel`：新会话的默认模型，会话内可用 `/model` 临时切换。当前主力是 GPT-6.1 Sol，走 openai-codex 订阅渠道（0.99.0 起界面显示为 “OpenAI Codex (legacy)”）。它也在 `enabledModels` 清单里，所以启动时会直接选中它。
-- `defaultThinkingLevel`：`max`，全局兜底档位，只对没有专属条目的模型生效。
-- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。最终档位还会按模型实际支持的范围调整，映射规则见 [07-models.md](07-models.md)。
+- 本机没有设置 `defaultProvider` / `defaultModel`。未用 `--model` 指定模型、也没有续接会话时，从 `enabledModels` 解析后的可用清单选第一个；当前是 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 Ctrl+S 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
+- `defaultThinkingLevel`：`high`，全局兜底档位，只对没有专属条目的模型生效。
+- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [07-models.md](07-models.md)。
 - `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 Ctrl+S 保存为 `defaultThinkingLevel`。
 
 ## 自动压缩
@@ -70,12 +71,16 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 ## defaultTools
 
 ```json
-"defaultTools": ["find", "grep", "bash", "read", "edit", "write", "ls"]
+"defaultTools": ["find", "grep", "read", "write", "edit", "bash", "ls", "codemode", "tool_search"]
 ```
 
 启动时激活的工具。只写工具名时，这份列表整体替换 pi 的内建默认集（`read`、`bash`、`edit`、`write`）；写成 `+name` / `-name` 则在默认集上增减。`codemode`、`tool_search` 这类内建扩展工具也可以按名字启用。
 
-这里额外打开了 `find`、`grep`、`ls`。`find`/`grep` 必须在列：pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [09-agents-md.md](09-agents-md.md)。
+这里额外打开了 `find`、`grep`、`ls`、`codemode` 和 `tool_search`：
+
+- `codemode` 在 QuickJS 沙箱里批量调用工具、过滤输出，也能调用分类和图像模型。脚本不能直接访问文件系统或网络，但可通过工具和模型 API 访问外部服务；这不限制被调用工具本身的权限。
+- `tool_search` 搜索尚未向模型声明的工具，把匹配结果加入下一次调用的工具列表。
+- `find`/`grep` 必须在列：pi-fff 的 `override` 模式把这两个工具的实现换成了 FFF，名字不变，全局 AGENTS.md 的搜索纪律正是基于这一点写的，见 [09-agents-md.md](09-agents-md.md)。
 
 ## packages
 
@@ -100,4 +105,4 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 ## enabledModels
 
-Ctrl+P 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 10 个供应商的 17 个模型，详见 [07-models.md](07-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里对清单外的模型按 Ctrl+S，会把它的 `provider/id` 追加进来。
+Ctrl+P 循环切换的模型清单，同时决定启动时选哪个模型：默认模型在清单里就用它，否则用清单第一个（`--model` 和续接会话不受此规则约束）。当前收录 8 个供应商的 12 个模型，第一项是 `openai-codex/gpt-6-astra`，详见 [07-models.md](07-models.md)。`/scoped-models` 可以直接编辑并保存清单；在 `/model` 里对清单外的模型按 Ctrl+S，会把它的 `provider/id` 追加进来。

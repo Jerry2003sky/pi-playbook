@@ -40,7 +40,7 @@ tools: find, grep, ls, bash, read, edit, write
 1. **内置工具和扩展工具分开选。** `tools` 列出了子代理插件识别的全部七个内置工具，所以 `Agent` 工具说明里 pico 的工具显示为 `*`。`extensions` 负责加载 pi-fff 和 pi-web-access，需要更细时可以用 `ext:<扩展>/<工具>` 筛选。主会话靠 `override` 用上 FFF 版的 `find` / `grep`；子代理会话里可能还会同时出现 `fffind` / `ffgrep`。联网工具能否用，要在实际的子代理会话里核对。
 
    权限方面：pico 没写 `allowed_subagents`，插件据此关闭嵌套委托。`bash` 依然能删文件、推代码，正文要求这类操作必须有任务的明确授权——安全性取决于代理是否遵守指令。
-2. **模型分工。** 主模型（GPT-6.1 Sol）负责推理和决策，DeepSeek Flash 负责执行。任务书写清楚，执行档照做即可，主力模型的 token 留给真正需要判断的地方。
+2. **模型分工。** 主模型（GPT-6 Astra / GPT-6.1 Sol）负责推理和决策，DeepSeek Flash 负责执行。任务书写清楚，执行档照做即可，主力模型的 token 留给真正需要判断的地方。
 
 ## 正文 prompt 的设计
 
