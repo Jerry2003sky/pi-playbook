@@ -15,8 +15,8 @@
 | 配置 | 值 | 含义 |
 |------|----|------|
 | `theme` | `"dark-classic"` | 本地自定义主题（pi 内置主题为 `system`、`dark`、`light`）；副本见 [`config/themes/dark-classic.json`](../config/themes/dark-classic.json)，使用时复制到 `~/.pi/agent/themes/`，来源说明见 [05-界面与观测.md](05-界面与观测.md) |
-| `tuiMode` | `"fullscreen"` | pi 1.1.0 默认的全屏 TUI，输出区占满终端；`"regular"` 为普通滚动模式 |
-| `fullscreenScrollbar` | `"auto"` | 全屏转录区滚动条：滚动或指针悬停时临时显示（`"always"` 常驻、`"hidden"` 关闭） |
+| `tuiMode` | `"fullscreen"` | TUI 模式。<br>· `"fullscreen"`：pi 1.1.0 默认的全屏 TUI，输出区占满终端<br>· `"regular"`：普通滚动模式 |
+| `fullscreenScrollbar` | `"auto"` | 全屏转录区的滚动条。<br>· `"auto"`：滚动或指针悬停时临时显示<br>· `"always"`：常驻<br>· `"hidden"`：关闭 |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入框水平留白（0–3），1 看起来最舒服 |
 | `lastChangelogVersion` | `"1.1.0"` | pi 自动记录的已读 changelog 版本，不用手动改 |
