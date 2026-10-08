@@ -1,6 +1,30 @@
+[pi-playbook](../README.md) › [主线](../README.md#文档导航) › **06 pico 子代理**
+
 # 子代理：pico.md
 
 子代理功能来自 [`@tintinweb/pi-subagents`](https://github.com/tintinweb/pi-subagents)，用法和 Claude Code 的子代理类似：用 `Agent` 工具派发，可以前台、后台或并行运行，中途用 `steer_subagent` 纠偏，结束后用 `get_subagent_result` 取结果。插件本身的参数见 [04-高阶阶段.md](04-高阶阶段.md)，本文只讲我写的 pico。
+
+一次委托从头到尾是这样走的：主模型先判断要不要委托，再把任务书交给 pico；结果短就直接回，长就写盘、只回摘要。
+
+```mermaid
+flowchart TB
+    A(["主模型拿到任务"])
+    A -- 几次工具调用就能做完 --> Self("主模型自己做")
+    A -- 量大、范围明确 --> T("写自包含任务书<br/><small>可附 slug</small>")
+    T --> P("pico 执行<br/><small>看不到主会话历史，只按任务书干活</small>")
+    P -- 结果较短 --> R1("直接回结论<br/><small>file:line · 假设 · 未完成项</small>")
+    P -- 给了 slug，或超过约 50 行 --> D[("报告写盘<br/><small>reports/时间戳-slug.md</small>")]
+    D --> R2("只回 3–5 行结论<br/><small>+ 文件路径 + 章节列表</small>")
+    R1 --> M(["主模型上下文只进摘要"])
+    R2 --> M
+
+    classDef main fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
+    classDef cheapN fill:#dcfce7,stroke:#22c55e,stroke-width:1.5px,color:#14532d
+    classDef store fill:#f3f4f6,stroke:#9ca3af,color:#374151
+    class A,Self,T,M main
+    class P,R1,R2 cheapN
+    class D store
+```
 
 自定义代理是一个 Markdown 文件，YAML frontmatter 定义属性，正文是 system prompt：
 
@@ -27,7 +51,7 @@ tools: find, grep, ls, bash, read, edit, write
 |------|------|------|
 | `description` | 一段英文 | 显示在 `Agent` 工具的 `subagent_type` 说明里，主模型据此决定要不要委托。它写明两件事：适合交给 pico 的活（仓库级调研、独立实现切片、写测试、长时间测试/构建、多源联网调研），以及每次调用至少一分钟的固定开销，提醒主模型几次工具调用就能做完的事自己做。措辞和 AGENTS.md 的委托规则保持一致 |
 | `display_name` | `Pico` | 界面上显示的名字 |
-| `model` | `deepseek/deepseek-flash` | DeepSeek 的执行档模型；接入和思考档位见 [07-models.md](07-models.md)。换模型时，连同 models.json 和 settings.json 的 enabledModels 一起检查 |
+| `model` | `deepseek/deepseek-flash` | DeepSeek 的执行档模型；接入和思考档位见 [ref-models.md](ref-models.md)。换模型时，连同 models.json 和 settings.json 的 enabledModels 一起检查 |
 | `thinking` | `high` | 思考档位直接影响子代理多久能返回。调研、机械性修改用 high 够了；结果质量明显变差时再调到 max |
 | `prompt_mode` | `replace` | 用正文整体替换默认 system prompt（`append` 则是追加在后面） |
 | `inherit_context` | `false` | 不继承主会话历史，保持隔离，也省上下文 |
@@ -54,4 +78,8 @@ tools: find, grep, ls, bash, read, edit, write
 
 ## 与主会话的配合
 
-pico.md 规定被委托方怎么干活；什么时候委托、什么时候自己做，由全局 AGENTS.md 规定，见 [09-agents-md.md](09-agents-md.md) 的“子代理委托策略”。两份文件要配套修改。
+pico.md 规定被委托方怎么干活；什么时候委托、什么时候自己做，由全局 AGENTS.md 规定，见 [07-全局指令.md](07-全局指令.md) 的“子代理委托策略”。两份文件要配套修改。
+
+---
+
+← [05 界面与观测](05-界面与观测.md) · [返回目录](../README.md#文档导航) · [07 全局指令](07-全局指令.md) →

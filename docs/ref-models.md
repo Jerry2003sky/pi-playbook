@@ -1,3 +1,5 @@
+[pi-playbook](../README.md) › [参考](../README.md#参考) › **models.json**
+
 # models.json 与模型接入
 
 模型相关的配置分在两处：
@@ -5,7 +7,7 @@
 | 文件 | 职责 |
 |------|------|
 | `~/.pi/agent/models.json` | 供应商/模型的行为覆盖与自定义模型（本文件的主角） |
-| `~/.pi/agent/settings.json` 的 `enabledModels` | Ctrl+P 循环切换的模型清单 |
+| `~/.pi/agent/settings.json` 的 `enabledModels` | <kbd>Ctrl</kbd>+<kbd>P</kbd> 循环切换的模型清单 |
 
 完整文件见 [`config/models.json`](../config/models.json)。
 
@@ -149,8 +151,8 @@
 
 **换模型时要连带检查的地方。** `models.json` 只管接入。其余引用散在各处：
 
-- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机未设置，见 [06-settings.md](06-settings.md)）；
-- `settings.json` 的 `enabledModels`：Ctrl+P 清单；
+- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机未设置，见 [ref-settings.md](ref-settings.md)）；
+- `settings.json` 的 `enabledModels`：<kbd>Ctrl</kbd>+<kbd>P</kbd> 清单；
 - `pico.md` 的 `model`：子代理；
 - `pi-autoname.json` 的 `model` / `fallbackModels`：会话命名；
 - `contextPrune.summarizerModel`：剪枝摘要。
@@ -174,7 +176,7 @@
 ]
 ```
 
-Ctrl+P 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
+<kbd>Ctrl</kbd>+<kbd>P</kbd> 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
 这份清单包含 8 个供应商的 12 个模型。本机没有指定默认模型，所以普通新会话从第一项 GPT-6 Astra 起步；`--model` 和续接会话例外。按用途分：
 
@@ -183,10 +185,14 @@ Ctrl+P 只在这份清单里循环，启动时也从清单里挑模型：默认�
 - **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）
 - **其他备选**：zai-coding-cn/glm-5.3、Claude Fable 5.1（zenmux / akile 双渠道）、grok-4.7、deepseek-v4-pro
 
-`openai-codex/gpt-6-luna` 不在当前 Ctrl+P 清单里，但仍保留在 `pi-autoname.json` 的 `fallbackModels` 和 `modelThinkingLevels` 中。`enabledModels` 限制启动选择和循环切换，不是禁止清单外模型使用的权限列表。
+`openai-codex/gpt-6-luna` 不在当前 <kbd>Ctrl</kbd>+<kbd>P</kbd> 清单里，但仍保留在 `pi-autoname.json` 的 `fallbackModels` 和 `modelThinkingLevels` 中。`enabledModels` 限制启动选择和循环切换，不是禁止清单外模型使用的权限列表。
 
 ## 自定义供应商
 
 内置供应商列表见 [官方 providers.md](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/providers.md)。接入兼容网关的步骤：在 `models.json` 的 `providers` 段定义 `baseUrl` 和 `api`，新模型写进 `models` 数组，要改内置模型就用 `modelOverrides`。完整格式见 [官方 models.md](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/models.md)。
 
 对照上面的文件：zenmux 和 akile-claude 是 Anthropic 兼容端点，akile-gpt 是 OpenAI Responses 兼容端点，kimi-coding 是在内置供应商上覆盖一个模型。
+
+---
+
+[返回目录](../README.md#参考)
