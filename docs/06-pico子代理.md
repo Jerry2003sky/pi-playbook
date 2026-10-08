@@ -49,7 +49,7 @@ tools: find, grep, ls, bash, read, edit, write
 
 | 字段 | 取值 | 含义 |
 |------|------|------|
-| `description` | 一段英文 | 显示在 `Agent` 工具的 `subagent_type` 说明里，主模型据此决定要不要委托。它写明两件事：适合交给 pico 的活（仓库级调研、独立实现切片、写测试、长时间测试/构建、多源联网调研），以及每次调用至少一分钟的固定开销，提醒主模型几次工具调用就能做完的事自己做。措辞和 AGENTS.md 的委托规则保持一致 |
+| `description` | 一段英文 | 主模型据此决定要不要委托，见表下说明 |
 | `display_name` | `Pico` | 界面上显示的名字 |
 | `model` | `deepseek/deepseek-flash` | DeepSeek 的执行档模型；接入和思考档位见 [ref-models.md](ref-models.md)。换模型时，连同 models.json 和 settings.json 的 enabledModels 一起检查 |
 | `thinking` | `high` | 思考档位直接影响子代理多久能返回。调研、机械性修改用 high 够了；结果质量明显变差时再调到 max |
@@ -58,6 +58,8 @@ tools: find, grep, ls, bash, read, edit, write
 | `extensions` | 两个扩展 | 声明加载 pi-fff（搜索）和 pi-web-access（联网）；实际能用哪些工具，以子代理会话里的加载和激活结果为准 |
 | `skills` | `true` | 加载技能 |
 | `tools` | 内置工具列表 | 七个基础工具（find/grep/ls/bash/read/edit/write）；扩展工具由 `extensions` 和 `ext:` 选择器控制，嵌套委托由 `allowed_subagents` 控制 |
+
+`description` 显示在 `Agent` 工具的 `subagent_type` 说明里，主模型据此决定要不要委托。它写明两件事：适合交给 pico 的活（仓库级调研、独立实现切片、写测试、长时间测试/构建、多源联网调研），以及每次调用至少一分钟的固定开销，提醒主模型几次工具调用就能做完的事自己做。措辞和 AGENTS.md 的委托规则保持一致。
 
 两个设计要点：
 
