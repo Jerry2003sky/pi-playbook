@@ -114,13 +114,15 @@ cp config/themes/dark-classic.json ~/.pi/agent/themes/
 ```
 pi-playbook/
 ├── README.md                    # 你在这里
+├── AGENTS.md / CLAUDE.md        # 维护规范（给人和 AI 看）
+├── scripts/                     # 维护脚本：链接检查、Mermaid 预览
 ├── docs/                        # 讲解文档，见上方导航
 ├── plugins/
 │   └── pi-claude-code-tui/      # 本地定制插件（完整源码 + 定制说明）
 ├── config/                      # 本机配置的脱敏副本
 │   ├── settings.json            #   ~/.pi/agent/settings.json
 │   ├── keybindings.json         #   ~/.pi/agent/keybindings.json（见 05）
-│   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + kimi-coding 模型覆盖，见 07）
+│   ├── models.json              #   自定义供应商与模型接入（zenmux / akile 网关 + kimi-coding 模型覆盖，见 ref-models）
 │   ├── web-search.json          #   ~/.pi/agent/web-search.json
 │   ├── pi-autoname.json         #   ~/.pi/agent/pi-autoname.json
 │   ├── pi-fff.json              #   ~/.pi/agent/pi-fff.json（见 03）
