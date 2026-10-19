@@ -151,7 +151,7 @@
 
 **换模型时要连带检查的地方。** `models.json` 只管接入。其余引用散在各处：
 
-- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机未设置，见 [ref-settings.md](ref-settings.md)）；
+- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机设为 `openai-codex/gpt-6-astra`，见 [ref-settings.md](ref-settings.md)）；
 - `settings.json` 的 `enabledModels`：<kbd>Ctrl</kbd>+<kbd>P</kbd> 清单；
 - `pico.md` 的 `model`：子代理；
 - `pi-autoname.json` 的 `model` / `fallbackModels`：会话命名；

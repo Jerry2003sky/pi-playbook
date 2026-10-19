@@ -15,11 +15,11 @@
 | 配置 | 值 | 含义 |
 |------|----|------|
 | `theme` | `"dark-classic"` | 本地自定义主题（pi 内置主题为 `system`、`dark`、`light`）；副本见 [`config/themes/dark-classic.json`](../config/themes/dark-classic.json)，使用时复制到 `~/.pi/agent/themes/`，来源说明见 [05-界面与观测.md](05-界面与观测.md) |
-| `tuiMode` | `"fullscreen"` | TUI 模式。<br>· `"fullscreen"`：pi 1.1.0 默认的全屏 TUI，输出区占满终端<br>· `"regular"`：普通滚动模式 |
+| `tuiMode` | `"fullscreen"` | TUI 模式。<br>· `"fullscreen"`：pi 1.3.0 默认的全屏 TUI，输出区占满终端<br>· `"regular"`：普通滚动模式 |
 | `fullscreenScrollbar` | `"auto"` | 全屏转录区的滚动条。<br>· `"auto"`：滚动或指针悬停时临时显示<br>· `"always"`：常驻<br>· `"hidden"`：关闭 |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入框水平留白（0–3），1 看起来最舒服 |
-| `lastChangelogVersion` | `"1.1.0"` | pi 自动记录的已读 changelog 版本，不用手动改 |
+| `lastChangelogVersion` | `"1.3.0"` | pi 自动记录的已读 changelog 版本，不用手动改 |
 
 本机还有自动生成的设备标识 `deviceId`；它不影响这份配置的使用，脱敏副本不收录。
 
@@ -43,21 +43,25 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 ## 默认模型
 
 ```json
-"defaultThinkingLevel": "high",
+"defaultProvider": "openai-codex",
+"defaultModel": "gpt-6-astra",
+"defaultThinkingLevel": "max",
 "modelThinkingLevels": {
   "akile-gpt/gpt-6-astra": "medium",
   "zai-coding-cn/glm-5.3": "max",
   "kimi-coding/k3": "max",
   "kimi-coding/kimi-for-coding": "max",
   "openai-codex/gpt-6.1-sol": "high",
-  "openai-codex/gpt-6-astra": "high",
-  "openai-codex/gpt-6-luna": "max"
+  "openai-codex/gpt-6-astra": "medium",
+  "openai-codex/gpt-6-luna": "max",
+  "deepseek/deepseek-flash": "max",
+  "kimi-coding/k3-256k": "max"
 }
 ```
 
-- 本机没有设置 `defaultProvider` / `defaultModel`。未用 `--model` 指定模型、也没有续接会话时，从 `enabledModels` 解析后的可用清单选第一个；当前是 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
-- `defaultThinkingLevel`：`high`，全局兜底档位，只对没有专属条目的模型生效。
-- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、kimi-for-coding 用 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [ref-models.md](ref-models.md)。
+- `defaultProvider: openai-codex`、`defaultModel: gpt-6-astra`：未用 `--model` 指定模型、也没有续接会话时，启动用 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
+- `defaultThinkingLevel`：`max`，全局兜底档位，只对没有专属条目的模型生效。
+- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 起步用 high，两个渠道的 Astra 都用 medium，GLM-5.3、K3、K3-256K、kimi-for-coding 和 deepseek-flash 用 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [ref-models.md](ref-models.md)。
 - `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 保存为 `defaultThinkingLevel`。
 
 ## 自动压缩
@@ -69,6 +73,14 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 ```
 
 显式开启 pi 内建的自动压缩（默认值本来就是 `true`）。它在上下文快满时触发，作为最后一道保险；日常的上下文控制交给 `contextPrune` 逐批剪枝旧工具输出，参数见 [04-高阶阶段.md](04-高阶阶段.md)。pi 还提供 `compaction.reserveTokens`、`compaction.keepRecentTokens` 和按模型设置的 `compaction.modelOverrides`，这里只用了 `enabled`。
+
+## 消息队列
+
+```json
+"steeringMode": "one-at-a-time"
+```
+
+agent 运行时输入的引导消息（steering）会排队，在当前这轮助手回复执行完工具调用后投递。`"one-at-a-time"` 每轮只投递一条，也是 pi 的默认值；`"all"` 一次投递全部。同类的 `followUpMode` 管 agent 完成后才处理的后续消息，这里没有设置。
 
 ## defaultTools
 
@@ -86,7 +98,7 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 ## packages
 
-10 个 npm 包，pi 启动时加载它们提供的扩展、技能和命令。各包的介绍按阶段分布在 [02](02-基础阶段.md)、[03](03-进阶阶段.md)、[04](04-高阶阶段.md)、[05](05-界面与观测.md)。第 11 个插件 pi-claude-code-tui 是本地扩展，放在 `~/.pi/agent/extensions/`，不在这个列表里。
+12 个包（11 个 npm 包、1 个 git 包），pi 启动时加载它们提供的扩展、技能和命令。各包的介绍按阶段分布在 [02](02-基础阶段.md)、[03](03-进阶阶段.md)、[04](04-高阶阶段.md)、[05](05-界面与观测.md)。第 13 个插件 pi-claude-code-tui 是本地扩展，放在 `~/.pi/agent/extensions/`，不在这个列表里。
 
 ```jsonc
 "packages": [
@@ -99,7 +111,9 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
   "npm:pi-token-speed",             // token 速度显示
   "npm:pi-condense",                // 上下文剪枝（settings.json 的 contextPrune 段）
   "npm:pi-autoname",                // 会话自动命名
-  "npm:@juicesharp/rpiv-ask-user-question"  // 结构化提问工具
+  "npm:@juicesharp/rpiv-ask-user-question",  // 结构化提问工具
+  "git:github.com/DietrichGebert/ponytail",   // 精简改动的技能包
+  "npm:@narumitw/pi-btw"                       // 旁路提问
 ]
 ```
 
