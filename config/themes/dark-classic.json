@@ -74,13 +74,13 @@
 		"syntaxOperator": "#D4D4D4",
 		"syntaxPunctuation": "#D4D4D4",
 
-		"thinkingOff": "darkGray",
-		"thinkingMinimal": "#6e6e6e",
-		"thinkingLow": "#5f87af",
-		"thinkingMedium": "#81a2be",
-		"thinkingHigh": "#b294bb",
-		"thinkingXhigh": "#d183e8",
-		"thinkingMax": "#ff5fff",
+		"thinkingOff": "okhsl(229 8% 49%)",
+		"thinkingMinimal": "okhsl(232 20% 52%)",
+		"thinkingLow": "okhsl(232 45% 54%)",
+		"thinkingMedium": "okhsl(263 59% 56%)",
+		"thinkingHigh": "okhsl(295 73% 59%)",
+		"thinkingXhigh": "okhsl(337 81% 61%)",
+		"thinkingMax": "okhsl(20 99% 63%)",
 
 		"bashMode": "green"
 	},

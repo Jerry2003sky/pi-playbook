@@ -1,5 +1,6 @@
 {
-  "provider": ["openai"],
+  "provider": ["openai", "xai", "deepseek"],
+  "deepseekApiKey": "!jq -r '.deepseek.key' ~/.pi/agent/auth.json",
   "openaiSearchModel": "gpt-6-astra",
   "xaiSearchModel": "grok-4.7",
   "xaiSearchTools": ["x_search"],
