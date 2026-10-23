@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.3.0",
+  "lastChangelogVersion": "1.4.0",
   "theme": "dark-classic",
   "defaultThinkingLevel": "max",
   "modelThinkingLevels": {
@@ -8,7 +8,7 @@
     "kimi-coding/k3": "max",
     "kimi-coding/kimi-for-coding": "max",
     "openai-codex/gpt-6.1-sol": "high",
-    "openai-codex/gpt-6-astra": "medium",
+    "openai-codex/gpt-6-astra": "high",
     "openai-codex/gpt-6-luna": "max",
     "deepseek/deepseek-flash": "max",
     "kimi-coding/k3-256k": "max"
