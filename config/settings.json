@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.4.0",
+  "lastChangelogVersion": "1.5.0",
   "theme": "dark-classic",
   "defaultThinkingLevel": "max",
   "modelThinkingLevels": {
@@ -43,6 +43,8 @@
   "enabledModels": [
     "openai-codex/gpt-6-astra",
     "openai-codex/gpt-6.1-sol",
+    "kimi-coding/k3.1-pro",
+    "kimi-coding/k3.1-pro-highspeed",
     "kimi-coding/k3",
     "kimi-coding/k3-256k",
     "kimi-coding/kimi-for-coding",
@@ -79,7 +81,7 @@
     "quietOversizedSkips": true,
     "minBatchChars": 8000,
     "recoveryGraceTurns": 3,
-    "summarizerIdleTimeoutMs": 20000,
+    "summarizerIdleTimeoutMs": 45000,
     "summarizerMaxTimeoutMs": 100000,
     "protectedTools": [
       "ask_user_question",
@@ -120,7 +122,14 @@
   "compaction": {
     "enabled": true
   },
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-astra",
-  "steeringMode": "one-at-a-time"
+  "defaultProvider": "kimi-coding",
+  "defaultModel": "k3.1-pro",
+  "steeringMode": "one-at-a-time",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.46.0",
+    "{\"source\":\"npm:pi-claude-code-ui\",\"scope\":\"user\"}": "1.0.107",
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.22.1",
+    "{\"source\":\"npm:pi-condense\",\"scope\":\"user\"}": "2.13.1",
+    "{\"source\":\"npm:pi-autoname\",\"scope\":\"user\"}": "0.7.2"
+  }
 }

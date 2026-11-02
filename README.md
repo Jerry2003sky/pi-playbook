@@ -8,7 +8,7 @@
 
 ```mermaid
 flowchart LR
-    M(["主模型<br/>GPT-6 Astra · GPT-6.1 Sol<br/><small>推理 · 架构 · 审阅</small>"])
+    M(["主模型<br/><small>推理 · 架构 · 审阅</small>"])
 
     subgraph cheap ["执行档 · deepseek-flash"]
         P("pico 子代理")
@@ -32,7 +32,7 @@ flowchart LR
     style cheap fill:none,stroke:#22c55e,stroke-dasharray:5 4
 ```
 
-主力模型是 GPT-6 Astra / GPT-6.1 Sol，杂活交给廉价档；8 个供应商、12 个模型按场景切换。
+主模型随新模型更换，杂活交给廉价档；当前用哪些模型见 [ref-models.md](docs/ref-models.md)。
 
 ## 从哪里开始
 
@@ -103,8 +103,8 @@ cp config/themes/dark-classic.json ~/.pi/agent/themes/
 <summary><b>几点约定</b></summary>
 
 - `config/` 是本机配置的脱敏副本，文档里的“我的配置”与对应文件保持一致。
-- 内容按本机 pi **1.4.0** 及已安装插件核对。
-- 家目录统一写成 `~`；需要凭证的地方用环境变量名占位，按自己的环境设置。`settings.json` 的设备标识 `deviceId` 不入库，其余收录的配置与本机一致。
+- 内容按本机 pi **1.5.0** 及已安装插件核对。
+- 家目录统一写成 `~`；需要凭证的地方用环境变量名占位，按自己的环境设置。`settings.json` 的设备标识 `deviceId` 不入库，其余收录的配置与本机一致（`pi-claude-code-tui.json` 除外：本机暂未安装这个插件，副本留着备用）。
 - 各插件小节的商店链接旁标注本机已装的版本号；`settings.json` 的 `packages` 保持本机的无版本写法。
 - 参数表分“常用参数”和折叠起来的“其余参数”，没写到的参数取插件默认值。
 
