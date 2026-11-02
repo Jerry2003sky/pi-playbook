@@ -151,7 +151,7 @@
 
 **换模型时要连带检查的地方。** `models.json` 只管接入。其余引用散在各处：
 
-- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（本机设为 `openai-codex/gpt-6-astra`，见 [ref-settings.md](ref-settings.md)）；
+- `settings.json` 的 `modelThinkingLevels`：模型专属档位；若另设 `defaultProvider` / `defaultModel`，也要一起检查（当前值见 [ref-settings.md](ref-settings.md)）；
 - `settings.json` 的 `enabledModels`：<kbd>Ctrl</kbd>+<kbd>P</kbd> 清单；
 - `pico.md` 的 `model`：子代理；
 - `pi-autoname.json` 的 `model` / `fallbackModels`：会话命名；
@@ -161,8 +161,10 @@
 
 ```jsonc
 "enabledModels": [
-  "openai-codex/gpt-6-astra",         // 当前新会话首选，启动档位 high
-  "openai-codex/gpt-6.1-sol",         // 主力备选，启动档位 high
+  "openai-codex/gpt-6-astra",         // 启动档位 high
+  "openai-codex/gpt-6.1-sol",         // 启动档位 high
+  "kimi-coding/k3.1-pro",            // 百万上下文，启动档位 max
+  "kimi-coding/k3.1-pro-highspeed",  // 同系列高速版，百万上下文，启动档位 max
   "kimi-coding/k3",                  // Moonshot 编程订阅，百万上下文
   "kimi-coding/k3-256k",             // 256K 长上下文版
   "kimi-coding/kimi-for-coding",     // models.json 覆盖：K2.8 Preview，启动档位 max
@@ -178,10 +180,10 @@
 
 <kbd>Ctrl</kbd>+<kbd>P</kbd> 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
-这份清单包含 8 个供应商的 12 个模型。本机没有指定默认模型，所以普通新会话从第一项 GPT-6 Astra 起步。按用途分：
+当前默认模型是 `kimi-coding/k3.1-pro`，它在清单内，所以普通新会话从它起步。主模型会随新模型更换，没有固定的主次，这里只按来源和用途分组：
 
-- **主力**：openai-codex/gpt-6-astra 和 openai-codex/gpt-6.1-sol（`modelThinkingLevels` 均定 high），akile-gpt 渠道的 Astra 做备用（启动档位 medium）
-- **长上下文备选**：k3 / k3-256k / kimi-for-coding（Moonshot 编程订阅；kimi-for-coding 在本地配置为百万上下文）
+- **GPT 系列**：openai-codex/gpt-6-astra、openai-codex/gpt-6.1-sol（`modelThinkingLevels` 均定 high），akile-gpt 渠道的 Astra 做备用（启动档位 medium）
+- **Kimi（Moonshot 编程订阅）**：k3.1-pro / k3.1-pro-highspeed（没有专属档位，由 `defaultThinkingLevel` 定为 max），k3 / k3-256k / kimi-for-coding（kimi-for-coding 在本地配置为百万上下文）
 - **廉价档**：deepseek/deepseek-flash（pico 子代理、会话命名、剪枝摘要）
 - **其他备选**：zai-coding-cn/glm-5.3、Claude Fable 5.1（zenmux / akile 双渠道）、grok-4.7、deepseek-v4-pro
 
