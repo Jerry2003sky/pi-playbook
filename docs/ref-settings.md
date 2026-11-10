@@ -73,7 +73,7 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 }
 ```
 
-显式开启 pi 内建的自动压缩（默认值本来就是 `true`）。它在上下文快满时触发，作为最后一道保险；日常的上下文控制交给 `contextPrune` 逐批剪枝旧工具输出，参数见 [04-高阶阶段.md](04-高阶阶段.md)。pi 还提供 `compaction.reserveTokens`、`compaction.keepRecentTokens` 和按模型设置的 `compaction.modelOverrides`，这里只用了 `enabled`。
+显式开启 pi 内建的自动压缩（默认值本来就是 `true`）。它本来在上下文快满时触发。装了 pi-clm 之后，日常的上下文控制交给模型自己编辑上下文，这类按阈值触发的压缩默认被 pi-clm 取消；只有请求溢出失败后的恢复压缩仍由 pi 执行，这是现在的最后一道保险。`contextPrune` 的逐批剪枝目前关闭。两个插件的参数见 [04-高阶阶段.md](04-高阶阶段.md)。pi 还提供 `compaction.reserveTokens`、`compaction.keepRecentTokens` 和按模型设置的 `compaction.modelOverrides`，这里只用了 `enabled`。
 
 ## 消息队列
 

@@ -12,7 +12,6 @@ flowchart LR
 
     subgraph cheap ["执行档 · deepseek-flash"]
         P("pico 子代理")
-        S("剪枝摘要")
         N("会话命名")
     end
 
@@ -20,14 +19,13 @@ flowchart LR
 
     M <-- 委托 / 只回摘要 --> P
     P -- 大报告 --> D
-    M -- 历史工具输出 --> S
     M -- 会话内容 --> N
 
     classDef main fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
     classDef cheapN fill:#dcfce7,stroke:#22c55e,stroke-width:1.5px,color:#14532d
     classDef store fill:#f3f4f6,stroke:#9ca3af,color:#374151
     class M main
-    class P,S,N cheapN
+    class P,N cheapN
     class D store
     style cheap fill:none,stroke:#22c55e,stroke-dasharray:5 4
 ```
