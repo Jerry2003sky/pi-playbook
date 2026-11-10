@@ -180,7 +180,7 @@
 
 <kbd>Ctrl</kbd>+<kbd>P</kbd> 只在这份清单里循环，启动时也从清单里挑模型：默认模型在清单里就用它，否则用第一个（`--model` 和续接会话除外）。条目格式和 `--models` 参数相同，支持精确 id、模糊匹配、不区分大小写的 glob，以及 `:<thinking>` 后缀；这里全部用精确 id。`/model` 默认只列清单内的模型，按 Tab 可切到全部；`/scoped-models` 可以直接编辑并保存清单。
 
-当前默认模型是 `kimi-coding/k3.1-pro`，它在清单内，所以普通新会话从它起步。主模型会随新模型更换，没有固定的主次，这里只按来源和用途分组：
+当前默认模型是 `openai-codex/gpt-6-astra`，它在清单内，所以普通新会话从它起步。主模型会随新模型更换，没有固定的主次，这里只按来源和用途分组：
 
 - **GPT 系列**：openai-codex/gpt-6-astra、openai-codex/gpt-6.1-sol（`modelThinkingLevels` 均定 high），akile-gpt 渠道的 Astra 做备用（启动档位 medium）
 - **Kimi（Moonshot 编程订阅）**：k3.1-pro / k3.1-pro-highspeed（没有专属档位，由 `defaultThinkingLevel` 定为 max），k3 / k3-256k / kimi-for-coding（kimi-for-coding 在本地配置为百万上下文）
