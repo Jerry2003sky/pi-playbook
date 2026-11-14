@@ -38,7 +38,7 @@ flowchart TB
 description: Runs substantial, well-scoped tasks on a cheaper model and returns a concise summary, keeping raw output out of the parent's context. Good fits — repo-wide recon, independent implementation slices of a larger change, test authoring, long test/build runs, multi-source web research. Each call costs a minute or more (cold start, thinking, re-reading files), so the parent handles anything it can finish in a few tool calls itself — lookups, short Q&A, small edits and fixes. Give it a self-contained prompt; it sees nothing else.
 display_name: Pico
 model: deepseek/deepseek-flash
-thinking: high
+thinking: max
 prompt_mode: replace
 inherit_context: false
 extensions: [pi-fff, pi-web-access]
@@ -52,7 +52,7 @@ tools: find, grep, ls, bash, read, edit, write
 | `description` | 一段英文 | 主模型据此决定要不要委托，见表下说明 |
 | `display_name` | `Pico` | 界面上显示的名字 |
 | `model` | `deepseek/deepseek-flash` | DeepSeek 的执行档模型；接入和思考档位见 [ref-models.md](ref-models.md)。换模型时，连同 models.json 和 settings.json 的 enabledModels 一起检查 |
-| `thinking` | `high` | 思考档位直接影响子代理多久能返回。调研、机械性修改用 high 够了；结果质量明显变差时再调到 max |
+| `thinking` | `max` | 思考档位直接影响子代理多久能返回。之前用 high，现在调到 max |
 | `prompt_mode` | `replace` | 用正文整体替换默认 system prompt（`append` 则是追加在后面） |
 | `inherit_context` | `false` | 不继承主会话历史，保持隔离，也省上下文 |
 | `extensions` | 两个扩展 | 声明加载 pi-fff（搜索）和 pi-web-access（联网）；实际能用哪些工具，以子代理会话里的加载和激活结果为准 |

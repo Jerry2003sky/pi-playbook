@@ -2,7 +2,7 @@
 description: Runs substantial, well-scoped tasks on a cheaper model and returns a concise summary, keeping raw output out of the parent's context. Good fits — repo-wide recon, independent implementation slices of a larger change, test authoring, long test/build runs, multi-source web research. Each call costs a minute or more (cold start, thinking, re-reading files), so the parent handles anything it can finish in a few tool calls itself — lookups, short Q&A, small edits and fixes. Give it a self-contained prompt; it sees nothing else.
 display_name: Pico
 model: deepseek/deepseek-flash
-thinking: high
+thinking: max
 prompt_mode: replace
 inherit_context: false
 extensions: [pi-fff, pi-web-access]

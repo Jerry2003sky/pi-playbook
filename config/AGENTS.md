@@ -74,7 +74,7 @@ Require explicit user approval before running read, find, grep, ls, stat, du, ls
 
 # File and Content Search
 
-The built-in `find`/`grep` tools are FFF-backed (pi-fff override): pre-indexed, frecency-ranked, fuzzy, git-aware. Choosing them or bash is up to you.
+Prefer the built-in `find` for path searches and `grep` for content searches over shell commands. Both are FFF-backed (pi-fff override): pre-indexed, frecency-ranked, fuzzy, git-aware.
 
 When searching through bash, prefer `fd` for paths and `rg` for contents over `find`/`grep`:
 - Both silently skip hidden and ignored files by default (rg also skips binary contents). When results look unexpectedly empty, suspect this filtering before concluding the target is absent.

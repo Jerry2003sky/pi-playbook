@@ -8,7 +8,7 @@
 - **项目级覆盖**：`.pi/settings.json`（嵌套对象逐层合并，项目值优先）
 - 常用项也可以在 TUI 里用 `/settings` 修改
 
-内建设置项以 [官方 settings.md](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/settings.md) 为准。文件里的 `tokenSpeed` 和 `contextPrune` 两段属于插件，参数分别见 [05-界面与观测.md](05-界面与观测.md)（pi-token-speed）和 [04-高阶阶段.md](04-高阶阶段.md)（pi-condense）。本文逐块讲其余部分。
+内建设置项以 [官方 settings.md](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/settings.md) 为准。文件里的 `tokenSpeed` 和 `contextPrune` 两段属于插件，参数分别见 [05-界面与观测.md](05-界面与观测.md)（pi-token-speed）和 [04-高阶阶段.md](04-高阶阶段.md)（pi-condense）。顶层的 `groupToolCalls`、`terminalTheme` 两个键属于 pi-claude-code-ui，同样见 [05-界面与观测.md](05-界面与观测.md)。本文逐块讲其余部分。
 
 ## 基础外观
 
@@ -19,7 +19,7 @@
 | `fullscreenScrollbar` | `"auto"` | 全屏转录区的滚动条。<br>· `"auto"`：滚动或指针悬停时临时显示<br>· `"always"`：常驻<br>· `"hidden"`：关闭 |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式下选中即复制；pi 内建默认 `true`，这份配置关掉 |
 | `editorPaddingX` | `1` | 输入框水平留白（0–3），1 看起来最舒服 |
-| `lastChangelogVersion` | `"1.5.1"` | pi 自动记录的已读 changelog 版本，不用手动改 |
+| `lastChangelogVersion` | `"1.5.2"` | pi 自动记录的已读 changelog 版本，不用手动改 |
 | `extensionChangelogVersions` | `{…}` | pi 自动记录的各扩展包已读 changelog 版本，更新后下次全新启动时据此显示新条目，不用手动改 |
 
 本机还有自动生成的设备标识 `deviceId`；它不影响这份配置的使用，脱敏副本不收录。
@@ -62,7 +62,7 @@ pi 会自动从 `~/.pi/agent/skills/`、`~/.agents/skills/`、已装的包和项
 
 - `defaultProvider: openai-codex`、`defaultModel: gpt-6-astra`：未用 `--model` 指定模型、也没有续接会话时，启动用 `openai-codex/gpt-6-astra`。`/model` 临时切换模型，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 可保存为默认；若已配置清单，保存的默认模型必须在清单内才会优先选中。
 - `defaultThinkingLevel`：`max`，全局兜底档位，只对没有专属条目的模型生效。
-- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、K3-256K、kimi-for-coding 和 deepseek-flash 用 max。K3.1 Pro 和 K3.1 Pro Highspeed 没有专属条目，由 `defaultThinkingLevel` 定为 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [ref-models.md](ref-models.md)。
+- `modelThinkingLevels`：按 `provider/modelId` 给模型设默认档位。新会话启动时的优先级是：**显式指定 > 模型专属条目 > `defaultThinkingLevel` > pi 内置默认 `medium`**。按这份配置，GPT-6.1 Sol 和 openai-codex 渠道的 Astra 起步用 high，akile-gpt 渠道的 Astra 用 medium，GLM-5.3、K3、K3-256K、kimi-for-coding 和 deepseek-flash 用 max。K3.1 Pro 没有专属条目，由 `defaultThinkingLevel` 定为 max。Luna 也记了 max，虽然不在当前切换清单里，仍供会话命名失败回退等场景引用。最终档位还会按模型实际支持的范围调整，映射规则见 [ref-models.md](ref-models.md)。
 - `/model` 切换时同样依次看显式档位、模型专属条目、全局默认；三者都没有，就沿用当前会话的档位。续接旧会话时，优先恢复会话记录里的档位。修改入口：`/settings` 里的 “Default thinking level per model” 编辑 `modelThinkingLevels`；`/thinking` 手动调整当前档位，按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 保存为 `defaultThinkingLevel`。
 
 ## 自动压缩
@@ -99,7 +99,7 @@ agent 运行时输入的引导消息（steering）会排队，在当前这轮助
 
 ## packages
 
-13 个包（11 个 npm 包、2 个 git 包），pi 启动时加载它们提供的扩展、技能和命令。各包的介绍按阶段分布在 [02](02-基础阶段.md)、[03](03-进阶阶段.md)、[04](04-高阶阶段.md)、[05](05-界面与观测.md)。第 14 个插件 pi-claude-code-tui 是本地扩展，放在 `~/.pi/agent/extensions/`，不在这个列表里；本机目前没有安装，源码留在 `plugins/`。
+14 个包（12 个 npm 包、1 个 git 包、1 个本地路径），pi 启动时加载它们提供的扩展、技能和命令。各包的介绍按阶段分布在 [02](02-基础阶段.md)、[03](03-进阶阶段.md)、[04](04-高阶阶段.md)、[05](05-界面与观测.md)。第 15 个插件 pi-claude-code-tui 是本地扩展，放在 `~/.pi/agent/extensions/`，不在这个列表里；本机目前没有安装，源码留在 `plugins/`。
 
 ```jsonc
 "packages": [
@@ -115,7 +115,8 @@ agent 运行时输入的引导消息（steering）会排队，在当前这轮助
   "npm:@juicesharp/rpiv-ask-user-question",  // 结构化提问工具
   "git:github.com/DietrichGebert/ponytail",   // 精简改动的技能包
   "npm:@narumitw/pi-btw",                      // 旁路提问
-  "git:github.com/lolipopshock/pi-clm"         // 模型自己编辑上下文
+  "~/Workplace/pi-clm",                        // 模型自己编辑上下文（本地检出的源码）
+  "npm:pi-quote-blocks"                        // 引用回复
 ]
 ```
 

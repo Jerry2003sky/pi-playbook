@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.5.1",
+  "lastChangelogVersion": "1.5.2",
   "theme": "dark-classic",
   "defaultThinkingLevel": "max",
   "modelThinkingLevels": {
@@ -37,7 +37,8 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "git:github.com/DietrichGebert/ponytail",
     "npm:@narumitw/pi-btw",
-    "git:github.com/lolipopshock/pi-clm"
+    "~/Workplace/pi-clm",
+    "npm:pi-quote-blocks"
   ],
   "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto",
@@ -45,17 +46,15 @@
     "openai-codex/gpt-6-astra",
     "openai-codex/gpt-6.1-sol",
     "kimi-coding/k3.1-pro",
-    "kimi-coding/k3.1-pro-highspeed",
     "kimi-coding/k3",
     "kimi-coding/k3-256k",
     "kimi-coding/kimi-for-coding",
     "xai/grok-4.7",
     "deepseek/deepseek-flash",
     "deepseek/deepseek-v4-pro",
-    "zai-coding-cn/glm-5.3",
     "akile-gpt/gpt-6-astra",
-    "akile-claude/claude-fable-5-1",
-    "zenmux/claude-fable-5-1:google-vertex"
+    "zenmux/claude-fable-5-1:google-vertex",
+    "akile-claude/claude-fable-5-2"
   ],
   "tokenSpeed": {
     "display": "tps",
@@ -128,11 +127,13 @@
   "steeringMode": "one-at-a-time",
   "extensionChangelogVersions": {
     "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.47.0",
-    "{\"source\":\"npm:pi-claude-code-ui\",\"scope\":\"user\"}": "1.0.109",
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.23.1",
-    "{\"source\":\"npm:pi-condense\",\"scope\":\"user\"}": "2.15.0",
-    "{\"source\":\"npm:pi-autoname\",\"scope\":\"user\"}": "0.7.2",
-    "{\"source\":\"npm:@narumitw/pi-btw\",\"scope\":\"user\"}": "0.63.5",
-    "{\"source\":\"npm:pi-context-view\",\"scope\":\"user\"}": "0.8.3"
-  }
+    "{\"source\":\"npm:pi-claude-code-ui\",\"scope\":\"user\"}": "1.0.112",
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.25.0",
+    "{\"source\":\"npm:pi-condense\",\"scope\":\"user\"}": "2.17.1",
+    "{\"source\":\"npm:pi-autoname\",\"scope\":\"user\"}": "0.7.4",
+    "{\"source\":\"npm:@narumitw/pi-btw\",\"scope\":\"user\"}": "0.63.8",
+    "{\"source\":\"npm:pi-context-view\",\"scope\":\"user\"}": "0.8.4"
+  },
+  "groupToolCalls": false,
+  "terminalTheme": false
 }
