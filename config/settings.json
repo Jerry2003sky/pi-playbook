@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "1.5.2",
+  "lastChangelogVersion": "1.6.1",
   "theme": "dark-classic",
-  "defaultThinkingLevel": "max",
+  "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
     "akile-gpt/gpt-6-astra": "medium",
     "zai-coding-cn/glm-5.3": "max",
@@ -43,8 +43,8 @@
   "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto",
   "enabledModels": [
-    "openai-codex/gpt-6-astra",
-    "openai-codex/gpt-6.1-sol",
+    "openai-codex/gpt-6.2-sol",
+    "openai-codex/gpt-6.2-astra",
     "kimi-coding/k3.1-pro",
     "kimi-coding/k3",
     "kimi-coding/k3-256k",
@@ -54,7 +54,11 @@
     "deepseek/deepseek-v4-pro",
     "akile-gpt/gpt-6-astra",
     "zenmux/claude-fable-5-1:google-vertex",
-    "akile-claude/claude-fable-5-2"
+    "akile-claude/claude-fable-5-2",
+    "google/gemini-4-neon",
+    "google/gemini-4-carbon",
+    "google/gemini-4-hydrogen",
+    "google/gemini-4-argon"
   ],
   "tokenSpeed": {
     "display": "tps",
@@ -123,15 +127,15 @@
     "enabled": true
   },
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-astra",
+  "defaultModel": "gpt-6.2-astra",
   "steeringMode": "one-at-a-time",
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.47.0",
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.48.0",
     "{\"source\":\"npm:pi-claude-code-ui\",\"scope\":\"user\"}": "1.0.112",
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.25.0",
-    "{\"source\":\"npm:pi-condense\",\"scope\":\"user\"}": "2.17.1",
-    "{\"source\":\"npm:pi-autoname\",\"scope\":\"user\"}": "0.7.4",
-    "{\"source\":\"npm:@narumitw/pi-btw\",\"scope\":\"user\"}": "0.63.8",
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.3",
+    "{\"source\":\"npm:pi-condense\",\"scope\":\"user\"}": "2.18.2",
+    "{\"source\":\"npm:pi-autoname\",\"scope\":\"user\"}": "0.7.5",
+    "{\"source\":\"npm:@narumitw/pi-btw\",\"scope\":\"user\"}": "0.63.9",
     "{\"source\":\"npm:pi-context-view\",\"scope\":\"user\"}": "0.8.4"
   },
   "groupToolCalls": false,

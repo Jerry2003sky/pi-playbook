@@ -2,9 +2,9 @@
 
 # 子代理：pico.md
 
-子代理功能来自 [`@tintinweb/pi-subagents`](https://github.com/tintinweb/pi-subagents)，用法和 Claude Code 的子代理类似：用 `Agent` 工具派发，可以前台、后台或并行运行，中途用 `steer_subagent` 纠偏，结束后用 `get_subagent_result` 取结果。插件本身的参数见 [04-高阶阶段.md](04-高阶阶段.md)，本文只讲我写的 pico。
+子代理机制来自 [`@tintinweb/pi-subagents`](https://github.com/tintinweb/pi-subagents)，用法与 Claude Code 的子代理一脉相承：通过 `Agent` 工具派发任务，支持前台、后台或并行运行，中途可用 `steer_subagent` 纠偏，结束后用 `get_subagent_result` 取回完整输出。插件参数见 [04-高阶阶段.md](04-高阶阶段.md)，本页只拆解自建的 `pico`。
 
-一次委托从头到尾是这样走的：主模型先判断要不要委托，再把任务书交给 pico；结果短就直接回，长就写盘、只回摘要。
+一次委托的完整链路如下：主模型先判断是否值得委托，再写出自包含任务书交给 `pico`；结果简短就直接回传，篇幅较长则落盘成报告、只回摘要。
 
 ```mermaid
 flowchart TB
@@ -26,10 +26,10 @@ flowchart TB
     class D store
 ```
 
-自定义代理是一个 Markdown 文件，YAML frontmatter 定义属性，正文是 system prompt：
+每个自定义代理都是一份 Markdown 文件，YAML frontmatter 声明运行属性，正文即为 system prompt：
 
-- 全局：`~/.pi/agent/agents/<name>.md`（本仓库的 [`config/agents/pico.md`](../config/agents/pico.md)）
-- 项目：`.pi/agents/<name>.md`（项目级覆盖全局同名）
+- 全局：`~/.pi/agent/agents/<name>.md`（本仓库副本见 [`config/agents/pico.md`](../config/agents/pico.md)）
+- 项目：`.pi/agents/<name>.md`（项目级覆盖全局同名代理）
 
 ## pico.md 的 frontmatter
 
@@ -49,38 +49,38 @@ tools: find, grep, ls, bash, read, edit, write
 
 | 字段 | 取值 | 含义 |
 |------|------|------|
-| `description` | 一段英文 | 主模型据此决定要不要委托，见表下说明 |
-| `display_name` | `Pico` | 界面上显示的名字 |
-| `model` | `deepseek/deepseek-flash` | DeepSeek 的执行档模型；接入和思考档位见 [ref-models.md](ref-models.md)。换模型时，连同 models.json 和 settings.json 的 enabledModels 一起检查 |
-| `thinking` | `max` | 思考档位直接影响子代理多久能返回。之前用 high，现在调到 max |
-| `prompt_mode` | `replace` | 用正文整体替换默认 system prompt（`append` 则是追加在后面） |
-| `inherit_context` | `false` | 不继承主会话历史，保持隔离，也省上下文 |
-| `extensions` | 两个扩展 | 声明加载 pi-fff（搜索）和 pi-web-access（联网）；实际能用哪些工具，以子代理会话里的加载和激活结果为准 |
-| `skills` | `true` | 加载技能 |
-| `tools` | 内置工具列表 | 七个基础工具（find/grep/ls/bash/read/edit/write）；扩展工具由 `extensions` 和 `ext:` 选择器控制，嵌套委托由 `allowed_subagents` 控制 |
+| `description` | 一段英文 | 主模型据此判断是否委托，详见表下说明 |
+| `display_name` | `Pico` | 界面挂件与列表中显示的名称 |
+| `model` | `deepseek/deepseek-flash` | DeepSeek 执行档模型，接入与思考档位见 [ref-models.md](ref-models.md)；换模型时须同步核对 `models.json` 与 `settings.json` 的 `enabledModels` |
+| `thinking` | `max` | 思考档位直接影响子代理耗时；此前设为 `high`，现已调至 `max` |
+| `prompt_mode` | `replace` | 以正文整体替换默认 system prompt（`append` 则在父级提示后追加） |
+| `inherit_context` | `false` | 不复制主会话历史，保持上下文隔离并压低输入开销 |
+| `extensions` | 两个扩展 | 声明加载 `pi-fff`（搜索）与 `pi-web-access`（联网）；实际可用工具以子代理会话内的加载和激活结果为准 |
+| `skills` | `true` | 继承父代理技能 |
+| `tools` | 内置工具列表 | 全部七个基础工具（find / grep / ls / bash / read / edit / write）；扩展工具另由 `extensions` 与 `ext:` 选择器控制，嵌套委托由 `allowed_subagents` 控制 |
 
-`description` 显示在 `Agent` 工具的 `subagent_type` 说明里，主模型据此决定要不要委托。它写明两件事：适合交给 pico 的活（仓库级调研、独立实现切片、写测试、长时间测试/构建、多源联网调研），以及每次调用至少一分钟的固定开销，提醒主模型几次工具调用就能做完的事自己做。措辞和 AGENTS.md 的委托规则保持一致。
+`description` 会原样出现在 `Agent` 工具的 `subagent_type` 说明里，是主模型决定要不要委托的第一依据。它点明了两件事：适合外包给 `pico` 的重活（仓库级调研、独立实现切片、写测试、长耗时测试与构建、多源联网调研），以及每次调用至少一分钟的固定冷启动成本，提醒主模型几步工具调用就能搞定的活自己做完。措辞与全局 AGENTS.md 的委托策略保持一致。
 
-两个设计要点：
+核心设计落在两点上：
 
-1. **内置工具和扩展工具分开选。** `tools` 列出了子代理插件识别的全部七个内置工具，所以 `Agent` 工具说明里 pico 的工具显示为 `*`。`extensions` 负责加载 pi-fff 和 pi-web-access，需要更细时可以用 `ext:<扩展>/<工具>` 筛选。主会话靠 `override` 用上 FFF 版的 `find` / `grep`；子代理会话里可能还会同时出现 `fffind` / `ffgrep`。联网工具能否用，要在实际的子代理会话里核对。
+1. **内置工具与扩展工具分开控制。** `tools` 列齐了子代理插件识别的全部七个内置工具，因此 `Agent` 工具描述里 `pico` 的工具栏显示为 `*`；`extensions` 则负责加载 `pi-fff` 和 `pi-web-access`，需要更细粒度筛选时可配合 `ext:<扩展>/<工具>`。主会话靠 `override` 用上 FFF 版 `find` / `grep`，子代理会话内有时会同时暴露 `fffind` / `ffgrep`；联网工具是否顺利激活，也须在实际子代理会话中核对。
 
-   权限方面：pico 没写 `allowed_subagents`，插件据此关闭嵌套委托。`bash` 依然能删文件、推代码，正文要求这类操作必须有任务的明确授权——安全性取决于代理是否遵守指令。
-2. **模型分工。** 主模型负责推理和决策，DeepSeek Flash 负责执行。任务书写清楚，执行档照做即可，主力模型的 token 留给真正需要判断的地方。
+   权限边界方面：`pico` 未配置 `allowed_subagents`，嵌套委托随之关闭。但 `bash` 依然具备删文件、推代码的能力，正文只能要求这类破坏性操作必须有任务书的明确授权——最终安全性取决于模型对指令的服从度。
+2. **明确模型分工。** 主模型专职推理与决策，DeepSeek Flash 专职执行。只要任务书写得够清楚，执行档按图索骥即可，主力模型的 token 便能留给真正吃判断力的环节。
 
 ## 正文 prompt 的设计
 
-正文（system prompt）分五段，每段解决一个问题：
+正文（system prompt）拆成五段，每段盯紧一个实际问题：
 
-1. **自包含**：“你能看到的一切都在 prompt 里。”子代理看不到主会话历史，委托方必须写一份自包含的任务书；这一段还告诉子代理，缺信息时什么情况下自己查、什么情况下停下来问。
-2. **云盘排除区**：子代理读不到全局 AGENTS.md，所以排除路径在正文里再列一遍。任务碰到这些路径时，报告冲突，交给主会话处理。
-3. **执行纪律**：拿到任务直接开工。正文给出 find/grep 和 bash 的选用原则（实际工具名以当前会话暴露的为准），bash 里优先 fd/rg；读文件只读需要的部分，改动尽量小；只做任务范围内的事，范围外的改进写进报告，由主会话决定。
-4. **返回格式**：最终消息先给结论，附 file:line，说明做了哪些假设、还剩什么没做。后台完成通知只带预览，主代理用 `get_subagent_result` 读完整结果。
-5. **大报告写盘**：委托方在任务书里只给一个 slug，子代理自己取时间戳、拼出路径写盘；没给 slug 但结果超过约 50 行时，自己起一个。文件存到 `~/.pi/agent/reports/<时间戳>-<slug>.md`，最终消息只带 3–5 行结论、文件路径和章节列表。这是整个设计的关键：**大段内容留在磁盘上，主会话上下文只进摘要**，省下主模型的 token。
+1. **自包含边界**：开篇申明任务所需的全部信息都在 prompt 里。子代理看不到主会话历史，既倒逼委托方写清任务书，也明确了子代理缺信息时的分寸——小细节自己查，缺关键决策或超出范围则直接说明并停手。
+2. **云盘排除区**：`prompt_mode: replace` 下的子代理读不到全局 AGENTS.md，因此把四个云盘排除路径在正文里重申一遍；任务若撞上这些路径，不触碰文件，直接上报冲突交由主会话处理。
+3. **执行纪律**：拿到任务立刻开工。正文约定了 `find` / `grep` 与 `bash` 的取舍（实际工具名以会话暴露为准），`bash` 侧优先 `fd` / `rg`；读文件只读相关区域，改代码尽量克制；严格守住任务范围，顺带发现的改进点写进报告，不越权改动。
+4. **返回契约**：最终消息先给直接结论，附关键 `file:line`，再交代假设、跳过的边界与遗留项。后台完成通知只带片段预览，主模型再用 `get_subagent_result` 拉取完整结果。
+5. **大报告写盘**：委托方只需在任务书中给一个 slug，子代理自行取时间戳拼出路径落盘；未给 slug 但输出超过约 50 行时，由子代理自行拟定短 slug。全文写入 `~/.pi/agent/reports/<时间戳>-<slug>.md`，最终回复只留 3–5 行核心结论、报告路径与一行章节目录。这是整套设计最省成本的一环：**大段原始材料留在磁盘，主会话上下文只进高密度摘要**。
 
 ## 与主会话的配合
 
-pico.md 规定被委托方怎么干活；什么时候委托、什么时候自己做，由全局 AGENTS.md 规定，见 [07-全局指令.md](07-全局指令.md) 的“子代理委托策略”。两份文件要配套修改。
+`pico.md` 规定被委托方如何履约；何时委托、何时自己动手，则写在全局 `AGENTS.md` 的“子代理委托策略”里（见 [07-全局指令.md](07-全局指令.md)）。两份文件互为表里，调整规则时须同步修改。
 
 ---
 
